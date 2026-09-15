@@ -22,6 +22,31 @@ def artifact(artifact_id):
  found=rows("SELECT payload FROM artifacts WHERE artifact_id=?",(artifact_id,));
  if not found: abort(404)
  return render_template("artifact.html",artifact=json.loads(found[0]["payload"]))
+@app.get("/artifacts")
+def artifacts_page(): return render_template("collection.html",title="Evidence Artifacts",description="Searchable normalized evidence inventory. Open any record to compare raw and normalized data.",items=payloads("artifacts","timestamp"),kind="artifact")
+@app.get("/devices")
+def devices_page():
+ arts=payloads("artifacts","timestamp"); devices=[]
+ for name in sorted({a.get("device") for a in arts if a.get("device")}):
+  related=[a for a in arts if a.get("device")==name]; devices.append({"name":name,"related":related,"users":sorted({a.get("user") for a in related if a.get("user")}),"files":sorted({a.get("filename") for a in related if a.get("classification") not in (None,"NORMAL")}),"first":next((a.get("timestamp") for a in related if a.get("timestamp")),None),"last":next((a.get("timestamp") for a in reversed(related) if a.get("timestamp")),None)})
+ return render_template("devices.html",devices=devices)
+@app.get("/files")
+def files_page():
+ arts=payloads("artifacts","timestamp"); names=sorted({a.get("filename") for a in arts if a.get("classification") not in (None,"NORMAL")}); return render_template("files.html",files=[{"name":name,"evidence":[a for a in arts if a.get("filename")==name]} for name in names])
+@app.get("/timeline")
+def timeline_page(): return render_template("collection.html",title="Unified Timeline",description="Chronological normalized records; timestamps retain their stated semantics.",items=payloads("artifacts","timestamp"),kind="timeline")
+@app.get("/hypotheses")
+def hypotheses_page(): return render_template("hypotheses.html",hypotheses=payloads("hypotheses","id"))
+@app.get("/correlations")
+def correlations_page(): return render_template("correlations.html",correlations=payloads("correlations"))
+@app.get("/experiments")
+def experiments_page():
+ arts=payloads("artifacts","timestamp"); features=[("USB connection",lambda a:a.get("artifact_type")=="usb" and a.get("action")=="connected"),("Sensitive file activity",lambda a:a.get("classification") not in (None,"NORMAL") and a.get("action") in {"accessed","copied","created","modified","deleted","renamed"}),("Archive creation",lambda a:a.get("artifact_type")=="archive"),("Sensitive USB destination",lambda a:a.get("classification") not in (None,"NORMAL") and str(a.get("path") or "").upper().startswith("E:\\")),("Deletion or rename",lambda a:a.get("action") in {"deleted","renamed"})]
+ return render_template("experiments.html",rows=[{"feature":label,"a":any(fn(x) for x in arts if x.get("experiment")=="EXP-A"),"b":any(fn(x) for x in arts if x.get("experiment")=="EXP-B")} for label,fn in features])
+@app.get("/reports")
+def reports_page(): return render_template("reports.html",reports=sorted((ROOT/"outputs").glob("*")) if (ROOT/"outputs").exists() else [])
+@app.get("/custody")
+def custody_page(): return render_template("custody.html",entries=rows("SELECT * FROM chain_of_custody ORDER BY timestamp"),audit=rows("SELECT * FROM audit_log ORDER BY timestamp DESC"))
 @app.get("/api/cases")
 def api_cases(): return jsonify(rows("SELECT * FROM cases"))
 @app.get("/api/cases/<case_id>")
@@ -56,4 +81,3 @@ def api_findings(): return api_hypotheses()
 @app.post("/api/reports")
 def api_reports(): return api_analyze()
 if __name__=="__main__": app.run(host="127.0.0.1",port=int(os.getenv("FORENSICS_PORT","5000")),debug=False)
-
