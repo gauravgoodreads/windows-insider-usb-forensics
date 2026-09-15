@@ -1,0 +1,7 @@
+[
+ {"artifact_id":"A-001","timestamp":"2026-09-15T09:00:00+05:30","timestamp_type":"logged_on","artifact_type":"user_session","source":"Security export","host":"CORP-PC01","user":"employee01","action":"logged_on","experiment":"EXP-A","description":"Interactive laboratory user session"},
+ {"artifact_id":"A-002","timestamp":"2026-09-15T09:03:00+05:30","timestamp_type":"connected","artifact_type":"usb","source":"USBSTOR","host":"CORP-PC01","user":"employee01","device":"BACKUP_DRIVE","action":"connected","experiment":"EXP-A","description":"Removable storage device observed"},
+ {"artifact_id":"A-003","timestamp":"2026-09-15T09:06:00+05:30","timestamp_type":"created","artifact_type":"filesystem","source":"NTFS listing","host":"CORP-PC01","user":"employee01","path":"E:\\Backup\\Readme.txt","filename":"Readme.txt","device":"BACKUP_DRIVE","action":"copied","experiment":"EXP-A","description":"Normal test file created on lab USB"},
+ {"artifact_id":"A-004","timestamp":"2026-09-15T09:10:00+05:30","timestamp_type":"disconnected","artifact_type":"usb","source":"Event-log export","host":"CORP-PC01","user":"employee01","device":"BACKUP_DRIVE","action":"disconnected","experiment":"EXP-A","description":"Device-removal observation"}
+]
+

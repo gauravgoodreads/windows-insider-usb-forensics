@@ -1,0 +1,1252 @@
+{
+  "case": {
+    "name": "Forensic Investigation of Simulated Insider Data Exfiltration via Removable USB Storage on Windows",
+    "case_id": "INSIDER-USB-001",
+    "investigator": "Student Investigator",
+    "timezone": "Asia/Kolkata"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "META-A",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": null,
+      "timestamp_type": "artifact_generated",
+      "artifact_type": "simulation_metadata",
+      "source": "investigator-provided metadata",
+      "host": null,
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": null,
+      "device": null,
+      "confidence": "LOW",
+      "description": "",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "artifact_type",
+        "experiment_id",
+        "experiment",
+        "type",
+        "hostname",
+        "user",
+        "scenario",
+        "source",
+        "confidence",
+        "notes"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "META-A",
+        "artifact_type": "simulation_metadata",
+        "experiment_id": "EXP-A",
+        "experiment": "EXP-A",
+        "type": "legitimate_usb",
+        "hostname": "CORP-PC01",
+        "user": "employee01",
+        "scenario": "Normal backup",
+        "source": "investigator-provided metadata",
+        "confidence": "LOW",
+        "notes": "SIMULATION METADATA \u2014 not forensic evidence"
+      },
+      "derived_from": [
+        "META-A"
+      ]
+    },
+    {
+      "artifact_id": "A-001",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T09:00:00+05:30",
+      "timestamp_type": "logged_on",
+      "artifact_type": "user_session",
+      "source": "Security export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": "logged_on",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Interactive laboratory user session",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-001",
+        "timestamp": "2026-09-15T09:00:00+05:30",
+        "timestamp_type": "logged_on",
+        "artifact_type": "user_session",
+        "source": "Security export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "action": "logged_on",
+        "experiment": "EXP-A",
+        "description": "Interactive laboratory user session"
+      },
+      "derived_from": [
+        "A-001"
+      ]
+    },
+    {
+      "artifact_id": "A-002",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T09:03:00+05:30",
+      "timestamp_type": "connected",
+      "artifact_type": "usb",
+      "source": "USBSTOR",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": "connected",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Removable storage device observed",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-002",
+        "timestamp": "2026-09-15T09:03:00+05:30",
+        "timestamp_type": "connected",
+        "artifact_type": "usb",
+        "source": "USBSTOR",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "device": "BACKUP_DRIVE",
+        "action": "connected",
+        "experiment": "EXP-A",
+        "description": "Removable storage device observed"
+      },
+      "derived_from": [
+        "A-002"
+      ]
+    },
+    {
+      "artifact_id": "A-003",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T09:06:00+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "filesystem",
+      "source": "NTFS listing",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "E:\\Backup\\Readme.txt",
+      "filename": "Readme.txt",
+      "action": "copied",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Normal test file created on lab USB",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-003",
+        "timestamp": "2026-09-15T09:06:00+05:30",
+        "timestamp_type": "created",
+        "artifact_type": "filesystem",
+        "source": "NTFS listing",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "E:\\Backup\\Readme.txt",
+        "filename": "Readme.txt",
+        "device": "BACKUP_DRIVE",
+        "action": "copied",
+        "experiment": "EXP-A",
+        "description": "Normal test file created on lab USB"
+      },
+      "derived_from": [
+        "A-003"
+      ]
+    },
+    {
+      "artifact_id": "A-004",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T09:10:00+05:30",
+      "timestamp_type": "disconnected",
+      "artifact_type": "usb",
+      "source": "Event-log export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": "disconnected",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Device-removal observation",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-004",
+        "timestamp": "2026-09-15T09:10:00+05:30",
+        "timestamp_type": "disconnected",
+        "artifact_type": "usb",
+        "source": "Event-log export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "device": "BACKUP_DRIVE",
+        "action": "disconnected",
+        "experiment": "EXP-A",
+        "description": "Device-removal observation"
+      },
+      "derived_from": [
+        "A-004"
+      ]
+    },
+    {
+      "artifact_id": "META-B",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": null,
+      "timestamp_type": "artifact_generated",
+      "artifact_type": "simulation_metadata",
+      "source": "investigator-provided metadata",
+      "host": null,
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": null,
+      "device": null,
+      "confidence": "LOW",
+      "description": "",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "artifact_type",
+        "experiment_id",
+        "experiment",
+        "type",
+        "hostname",
+        "user",
+        "scenario",
+        "sensitive_files",
+        "source",
+        "confidence",
+        "notes"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "META-B",
+        "artifact_type": "simulation_metadata",
+        "experiment_id": "EXP-B",
+        "experiment": "EXP-B",
+        "type": "simulated_insider",
+        "hostname": "CORP-PC01",
+        "user": "employee01",
+        "scenario": "USB data transfer",
+        "sensitive_files": [
+          "Employee_Salaries.xlsx",
+          "Customer_Database.csv",
+          "Project_Apollo.pdf"
+        ],
+        "source": "investigator-provided metadata",
+        "confidence": "LOW",
+        "notes": "SIMULATION METADATA \u2014 not forensic evidence"
+      },
+      "derived_from": [
+        "META-B"
+      ]
+    },
+    {
+      "artifact_id": "B-001",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:00:00+05:30",
+      "timestamp_type": "logged_on",
+      "artifact_type": "user_session",
+      "source": "Security export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": "logged_on",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Interactive laboratory user session",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-001",
+        "timestamp": "2026-09-15T10:00:00+05:30",
+        "timestamp_type": "logged_on",
+        "artifact_type": "user_session",
+        "source": "Security export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "action": "logged_on",
+        "experiment": "EXP-B",
+        "description": "Interactive laboratory user session"
+      },
+      "derived_from": [
+        "B-001"
+      ]
+    },
+    {
+      "artifact_id": "B-002",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:04:00+05:30",
+      "timestamp_type": "connected",
+      "artifact_type": "usb",
+      "source": "USBSTOR",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "HKLM\\SYSTEM\\...\\USBSTOR",
+      "filename": "USBSTOR",
+      "action": "connected",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Registry device identity observation",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "device",
+        "action",
+        "experiment",
+        "serial_number",
+        "path",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-002",
+        "timestamp": "2026-09-15T10:04:00+05:30",
+        "timestamp_type": "connected",
+        "artifact_type": "usb",
+        "source": "USBSTOR",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "device": "BACKUP_DRIVE",
+        "action": "connected",
+        "experiment": "EXP-B",
+        "serial_number": "LABUSB-0001",
+        "path": "HKLM\\SYSTEM\\...\\USBSTOR",
+        "description": "Registry device identity observation"
+      },
+      "derived_from": [
+        "B-002"
+      ]
+    },
+    {
+      "artifact_id": "B-003",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:07:00+05:30",
+      "timestamp_type": "accessed",
+      "artifact_type": "lnk",
+      "source": "Recent Items export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "C:\\CompanyData\\Finance\\Employee_Salaries.xlsx",
+      "filename": "Employee_Salaries.xlsx",
+      "action": "accessed",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Shortcut artifact associated with classified file",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-003",
+        "timestamp": "2026-09-15T10:07:00+05:30",
+        "timestamp_type": "accessed",
+        "artifact_type": "lnk",
+        "source": "Recent Items export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "C:\\CompanyData\\Finance\\Employee_Salaries.xlsx",
+        "filename": "Employee_Salaries.xlsx",
+        "action": "accessed",
+        "experiment": "EXP-B",
+        "description": "Shortcut artifact associated with classified file"
+      },
+      "derived_from": [
+        "B-003"
+      ]
+    },
+    {
+      "artifact_id": "B-004",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:08:00+05:30",
+      "timestamp_type": "accessed",
+      "artifact_type": "office",
+      "source": "Office recent export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "C:\\CompanyData\\Customers\\Customer_Database.csv",
+      "filename": "Customer_Database.csv",
+      "action": "accessed",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Recent-document observation",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-004",
+        "timestamp": "2026-09-15T10:08:00+05:30",
+        "timestamp_type": "accessed",
+        "artifact_type": "office",
+        "source": "Office recent export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "C:\\CompanyData\\Customers\\Customer_Database.csv",
+        "filename": "Customer_Database.csv",
+        "action": "accessed",
+        "experiment": "EXP-B",
+        "description": "Recent-document observation"
+      },
+      "derived_from": [
+        "B-004"
+      ]
+    },
+    {
+      "artifact_id": "B-005",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:10:00+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "filesystem",
+      "source": "USB NTFS listing",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "E:\\Backup\\Employee_Salaries.xlsx",
+      "filename": "Employee_Salaries.xlsx",
+      "action": "copied",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Destination-side file entry on laboratory USB",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-005",
+        "timestamp": "2026-09-15T10:10:00+05:30",
+        "timestamp_type": "created",
+        "artifact_type": "filesystem",
+        "source": "USB NTFS listing",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "E:\\Backup\\Employee_Salaries.xlsx",
+        "filename": "Employee_Salaries.xlsx",
+        "device": "BACKUP_DRIVE",
+        "action": "copied",
+        "experiment": "EXP-B",
+        "description": "Destination-side file entry on laboratory USB"
+      },
+      "derived_from": [
+        "B-005"
+      ]
+    },
+    {
+      "artifact_id": "B-006",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:11:00+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "filesystem",
+      "source": "USB NTFS listing",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "E:\\Backup\\Customer_Database.csv",
+      "filename": "Customer_Database.csv",
+      "action": "copied",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Destination-side file entry on laboratory USB",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-006",
+        "timestamp": "2026-09-15T10:11:00+05:30",
+        "timestamp_type": "created",
+        "artifact_type": "filesystem",
+        "source": "USB NTFS listing",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "E:\\Backup\\Customer_Database.csv",
+        "filename": "Customer_Database.csv",
+        "device": "BACKUP_DRIVE",
+        "action": "copied",
+        "experiment": "EXP-B",
+        "description": "Destination-side file entry on laboratory USB"
+      },
+      "derived_from": [
+        "B-006"
+      ]
+    },
+    {
+      "artifact_id": "B-007",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:13:00+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "archive",
+      "source": "USB NTFS listing",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "E:\\Backup\\Project_Files.zip",
+      "filename": "Project_Files.zip",
+      "action": "archived",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "ZIP archive created during device session",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-007",
+        "timestamp": "2026-09-15T10:13:00+05:30",
+        "timestamp_type": "created",
+        "artifact_type": "archive",
+        "source": "USB NTFS listing",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "E:\\Backup\\Project_Files.zip",
+        "filename": "Project_Files.zip",
+        "device": "BACKUP_DRIVE",
+        "action": "archived",
+        "experiment": "EXP-B",
+        "description": "ZIP archive created during device session"
+      },
+      "derived_from": [
+        "B-007"
+      ]
+    },
+    {
+      "artifact_id": "B-008",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:14:00+05:30",
+      "timestamp_type": "deleted",
+      "artifact_type": "recycle_bin",
+      "source": "Recycle Bin export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": "C:\\Users\\employee01\\Desktop\\apollo-temp.pdf",
+      "filename": "Project_Apollo.pdf",
+      "action": "deleted",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Temporary classified-file copy deletion observation",
+      "experiment": "EXP-B",
+      "classification": "SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "path",
+        "filename",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-008",
+        "timestamp": "2026-09-15T10:14:00+05:30",
+        "timestamp_type": "deleted",
+        "artifact_type": "recycle_bin",
+        "source": "Recycle Bin export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "path": "C:\\Users\\employee01\\Desktop\\apollo-temp.pdf",
+        "filename": "Project_Apollo.pdf",
+        "action": "deleted",
+        "experiment": "EXP-B",
+        "description": "Temporary classified-file copy deletion observation"
+      },
+      "derived_from": [
+        "B-008"
+      ]
+    },
+    {
+      "artifact_id": "B-009",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-09-15T10:18:00+05:30",
+      "timestamp_type": "disconnected",
+      "artifact_type": "usb",
+      "source": "Event-log export",
+      "host": "CORP-PC01",
+      "user": "employee01",
+      "path": null,
+      "filename": null,
+      "action": "disconnected",
+      "device": "BACKUP_DRIVE",
+      "confidence": "MEDIUM",
+      "description": "Device-removal observation",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "timestamp",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "host",
+        "user",
+        "device",
+        "action",
+        "experiment",
+        "description"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-009",
+        "timestamp": "2026-09-15T10:18:00+05:30",
+        "timestamp_type": "disconnected",
+        "artifact_type": "usb",
+        "source": "Event-log export",
+        "host": "CORP-PC01",
+        "user": "employee01",
+        "device": "BACKUP_DRIVE",
+        "action": "disconnected",
+        "experiment": "EXP-B",
+        "description": "Device-removal observation"
+      },
+      "derived_from": [
+        "B-009"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "timestamp": "2026-09-15T09:00:00+05:30",
+      "artifact": "A-001",
+      "source": "Security export",
+      "type": "user_session",
+      "user": "employee01",
+      "device": null,
+      "file": null,
+      "action": "logged_on",
+      "timestamp_type": "logged_on",
+      "interpretation": "Interactive laboratory user session",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-09-15T09:03:00+05:30",
+      "artifact": "A-002",
+      "source": "USBSTOR",
+      "type": "usb",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": null,
+      "action": "connected",
+      "timestamp_type": "connected",
+      "interpretation": "Removable storage device observed",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-09-15T09:06:00+05:30",
+      "artifact": "A-003",
+      "source": "NTFS listing",
+      "type": "filesystem",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": "Readme.txt",
+      "action": "copied",
+      "timestamp_type": "created",
+      "interpretation": "Normal test file created on lab USB",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-09-15T09:10:00+05:30",
+      "artifact": "A-004",
+      "source": "Event-log export",
+      "type": "usb",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": null,
+      "action": "disconnected",
+      "timestamp_type": "disconnected",
+      "interpretation": "Device-removal observation",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-09-15T10:00:00+05:30",
+      "artifact": "B-001",
+      "source": "Security export",
+      "type": "user_session",
+      "user": "employee01",
+      "device": null,
+      "file": null,
+      "action": "logged_on",
+      "timestamp_type": "logged_on",
+      "interpretation": "Interactive laboratory user session",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:04:00+05:30",
+      "artifact": "B-002",
+      "source": "USBSTOR",
+      "type": "usb",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": "USBSTOR",
+      "action": "connected",
+      "timestamp_type": "connected",
+      "interpretation": "Registry device identity observation",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:07:00+05:30",
+      "artifact": "B-003",
+      "source": "Recent Items export",
+      "type": "lnk",
+      "user": "employee01",
+      "device": null,
+      "file": "Employee_Salaries.xlsx",
+      "action": "accessed",
+      "timestamp_type": "accessed",
+      "interpretation": "Shortcut artifact associated with classified file",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:08:00+05:30",
+      "artifact": "B-004",
+      "source": "Office recent export",
+      "type": "office",
+      "user": "employee01",
+      "device": null,
+      "file": "Customer_Database.csv",
+      "action": "accessed",
+      "timestamp_type": "accessed",
+      "interpretation": "Recent-document observation",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:10:00+05:30",
+      "artifact": "B-005",
+      "source": "USB NTFS listing",
+      "type": "filesystem",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": "Employee_Salaries.xlsx",
+      "action": "copied",
+      "timestamp_type": "created",
+      "interpretation": "Destination-side file entry on laboratory USB",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:11:00+05:30",
+      "artifact": "B-006",
+      "source": "USB NTFS listing",
+      "type": "filesystem",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": "Customer_Database.csv",
+      "action": "copied",
+      "timestamp_type": "created",
+      "interpretation": "Destination-side file entry on laboratory USB",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:13:00+05:30",
+      "artifact": "B-007",
+      "source": "USB NTFS listing",
+      "type": "archive",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": "Project_Files.zip",
+      "action": "archived",
+      "timestamp_type": "created",
+      "interpretation": "ZIP archive created during device session",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:14:00+05:30",
+      "artifact": "B-008",
+      "source": "Recycle Bin export",
+      "type": "recycle_bin",
+      "user": "employee01",
+      "device": null,
+      "file": "Project_Apollo.pdf",
+      "action": "deleted",
+      "timestamp_type": "deleted",
+      "interpretation": "Temporary classified-file copy deletion observation",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-09-15T10:18:00+05:30",
+      "artifact": "B-009",
+      "source": "Event-log export",
+      "type": "usb",
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "file": null,
+      "action": "disconnected",
+      "timestamp_type": "disconnected",
+      "interpretation": "Device-removal observation",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": null,
+      "artifact": "META-A",
+      "source": "investigator-provided metadata",
+      "type": "simulation_metadata",
+      "user": "employee01",
+      "device": null,
+      "file": null,
+      "action": null,
+      "timestamp_type": "artifact_generated",
+      "interpretation": "",
+      "confidence": "LOW",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": null,
+      "artifact": "META-B",
+      "source": "investigator-provided metadata",
+      "type": "simulation_metadata",
+      "user": "employee01",
+      "device": null,
+      "file": null,
+      "action": null,
+      "timestamp_type": "artifact_generated",
+      "interpretation": "",
+      "confidence": "LOW",
+      "experiment": "EXP-B"
+    }
+  ],
+  "correlations": [
+    {
+      "event_id": "CORR-001",
+      "type": "USER_SESSION",
+      "start_time": "2026-09-15T09:00:00+05:30",
+      "end_time": "2026-09-15T09:00:00+05:30",
+      "related_artifacts": [
+        "A-001"
+      ],
+      "user": "employee01",
+      "device": null,
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "User-session artifact observed"
+      ],
+      "experiment": "EXP-A"
+    },
+    {
+      "event_id": "CORR-002",
+      "type": "USB_SESSION",
+      "start_time": "2026-09-15T09:03:00+05:30",
+      "end_time": "2026-09-15T09:10:00+05:30",
+      "related_artifacts": [
+        "A-002",
+        "A-004"
+      ],
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "files": [],
+      "confidence": "HIGH",
+      "reasoning": [
+        "Removable-device connection artifact observed",
+        "Disconnect artifact included when available"
+      ],
+      "experiment": "EXP-A"
+    },
+    {
+      "event_id": "CORR-003",
+      "type": "USER_SESSION",
+      "start_time": "2026-09-15T10:00:00+05:30",
+      "end_time": "2026-09-15T10:00:00+05:30",
+      "related_artifacts": [
+        "B-001"
+      ],
+      "user": "employee01",
+      "device": null,
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "User-session artifact observed"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-004",
+      "type": "USB_SESSION",
+      "start_time": "2026-09-15T10:04:00+05:30",
+      "end_time": "2026-09-15T10:18:00+05:30",
+      "related_artifacts": [
+        "B-002",
+        "B-009"
+      ],
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "files": [],
+      "confidence": "HIGH",
+      "reasoning": [
+        "Removable-device connection artifact observed",
+        "Disconnect artifact included when available"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-005",
+      "type": "POSSIBLE_TRANSFER_SESSION",
+      "start_time": "2026-09-15T10:00:00+05:30",
+      "end_time": "2026-09-15T10:14:00+05:30",
+      "related_artifacts": [
+        "B-002",
+        "B-003",
+        "B-004",
+        "B-005",
+        "B-006",
+        "B-008",
+        "B-007",
+        "B-001"
+      ],
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "files": [
+        "Customer_Database.csv",
+        "Employee_Salaries.xlsx",
+        "Project_Apollo.pdf"
+      ],
+      "confidence": "HIGH",
+      "reasoning": [
+        "USB device activity observed",
+        "Sensitive-file activity occurred within the configured time window",
+        "Employee user-session artifact corroborates temporal association",
+        "Destination-side file artifact was observed on removable media",
+        "Archive activity occurred in the same experiment"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-006",
+      "type": "SENSITIVE_FILE_ACTIVITY",
+      "start_time": "2026-09-15T10:07:00+05:30",
+      "end_time": "2026-09-15T10:14:00+05:30",
+      "related_artifacts": [
+        "B-003",
+        "B-004",
+        "B-005",
+        "B-006",
+        "B-008"
+      ],
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "files": [
+        "Customer_Database.csv",
+        "Employee_Salaries.xlsx",
+        "Project_Apollo.pdf"
+      ],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Project-classified sensitive files have activity artifacts"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-007",
+      "type": "ARCHIVE_ACTIVITY",
+      "start_time": "2026-09-15T10:13:00+05:30",
+      "end_time": "2026-09-15T10:13:00+05:30",
+      "related_artifacts": [
+        "B-007"
+      ],
+      "user": "employee01",
+      "device": "BACKUP_DRIVE",
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Archive creation artifact observed; intent is not established"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-008",
+      "type": "POSSIBLE_CONCEALMENT",
+      "start_time": "2026-09-15T10:14:00+05:30",
+      "end_time": "2026-09-15T10:14:00+05:30",
+      "related_artifacts": [
+        "B-008"
+      ],
+      "user": "employee01",
+      "device": null,
+      "files": [
+        "Project_Apollo.pdf"
+      ],
+      "confidence": "LOW",
+      "reasoning": [
+        "Rename or deletion artifact observed",
+        "Artifact presence alone does not establish malicious intent"
+      ],
+      "experiment": "EXP-B"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "title": "Removable media was connected",
+      "description": "Whether removable storage was present.",
+      "supporting_artifacts": [
+        "A-002",
+        "B-002"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "SUPPORTED",
+      "confidence": "HIGH",
+      "reasoning": [
+        "USB connection artifacts support device presence"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "employee01 accessed confidential company files",
+      "description": "Whether the configured user interacted with classified files.",
+      "supporting_artifacts": [
+        "B-003",
+        "B-004",
+        "B-005",
+        "B-006",
+        "B-008"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "SUPPORTED",
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "User-associated sensitive-file artifacts were observed"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "Confidential files were transferred to removable media",
+      "description": "Requires corroborated temporal and destination evidence.",
+      "supporting_artifacts": [
+        "B-001",
+        "B-002",
+        "B-003",
+        "B-004",
+        "B-005",
+        "B-006",
+        "B-007",
+        "B-008"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "SUPPORTED",
+      "confidence": "HIGH",
+      "reasoning": [
+        "USB device activity observed",
+        "Sensitive-file activity occurred within the configured time window",
+        "Employee user-session artifact corroborates temporal association",
+        "Destination-side file artifact was observed on removable media",
+        "Archive activity occurred in the same experiment"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "The user attempted concealment",
+      "description": "Rename/deletion/archive indicators are interpreted cautiously.",
+      "supporting_artifacts": [
+        "B-008"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "PARTIALLY_SUPPORTED",
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Rename or deletion activity is consistent with possible concealment",
+        "Artifact presence alone does not establish malicious intent"
+      ]
+    }
+  ],
+  "experimental_score": {
+    "score": 13,
+    "observed": {
+      "usb_connection": true,
+      "sensitive_file_access": true,
+      "archive_creation": true,
+      "deleted_sensitive_file": true,
+      "matching_destination_file": true,
+      "user_session_correlation": true
+    },
+    "applied_rules": {
+      "usb_connection": 2,
+      "sensitive_file_access": 2,
+      "archive_creation": 2,
+      "deleted_sensitive_file": 2,
+      "matching_destination_file": 3,
+      "user_session_correlation": 2
+    }
+  },
+  "conclusion": "The combination of device, filesystem, user-session, and application artifacts strongly supports the simulated data-transfer hypothesis. No single artifact independently establishes the complete transfer sequence.",
+  "limitations": [
+    "Simulated laboratory environment",
+    "Artifact availability depends on Windows configuration",
+    "Timestamp sources have different semantics and reliability",
+    "USB presence alone does not establish transfer",
+    "Correlation does not establish intent",
+    "The experimental score is not a forensic standard"
+  ],
+  "disclaimer": "This system is an educational digital-forensics research platform operating on a controlled laboratory dataset. Findings represent an analytical interpretation of the supplied artifacts and should not be treated as a substitute for a validated forensic methodology in a real investigation."
+}

@@ -1,0 +1,2 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Hypothesis Finding","type":"object","required":["id","assessment","confidence","supporting_artifacts","reasoning"],"properties":{"id":{"type":"string"},"assessment":{"enum":["SUPPORTED","PARTIALLY_SUPPORTED","NOT_SUPPORTED","INCONCLUSIVE"]},"confidence":{"enum":["LOW","MEDIUM","HIGH"]},"supporting_artifacts":{"type":"array"},"reasoning":{"type":"array"}}}
+

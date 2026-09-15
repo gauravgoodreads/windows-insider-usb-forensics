@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Timeline Entry","type":"object","required":["timestamp","artifact","source","timestamp_type","confidence"],"properties":{"timestamp":{"type":["string","null"]},"artifact":{"type":"string"},"source":{"type":"string"},"timestamp_type":{"type":"string"},"confidence":{"enum":["LOW","MEDIUM","HIGH"]}}}

@@ -1,0 +1,156 @@
+<!doctype html><meta charset='utf-8'><title>Forensic Report</title><style>body{font:16px system-ui;max-width:1100px;margin:auto;padding:40px;color:#172033}h1,h2{color:#164e63}pre{white-space:pre-wrap}</style><pre># Forensic Investigation of Simulated Insider Data Exfiltration via Removable USB Storage on Windows
+
+**Case:** INSIDER-USB-001  
+**Investigator:** Student Investigator
+
+## Executive Summary
+
+This controlled investigation evaluated device, filesystem, Registry/event, and user-activity observations. H3 is **SUPPORTED** (HIGH). The assessment relies on corroboration rather than a single artifact.
+
+## Investigation and Research Questions
+
+Did employee01 copy confidential company data to an external USB device, when, which files, and what independent evidence supports the conclusion? Can Windows artifacts distinguish legitimate USB use from simulated insider leakage?
+
+## Scope and Lab Environment
+
+Offline Windows 10/11 virtual-machine experiments using fictional Example Corporation data.
+
+## Evidence Inventory
+
+Raw exports are preserved separately; normalized records retain their original payload and provenance identifiers.
+
+## Acquisition Methodology and Hash Verification
+
+Acquire a forensic image from the stopped lab VM, hash it, record custody, and examine only a verified copy.
+
+## Artifact, USB, User, and Filesystem Analysis
+
+- META-A: simulation_metadata / None / n/a (LOW)
+
+- A-001: user_session / logged_on / n/a (MEDIUM)
+
+- A-002: usb / connected / BACKUP_DRIVE (MEDIUM)
+
+- A-003: filesystem / copied / Readme.txt (MEDIUM)
+
+- A-004: usb / disconnected / BACKUP_DRIVE (MEDIUM)
+
+- META-B: simulation_metadata / None / n/a (LOW)
+
+- B-001: user_session / logged_on / n/a (MEDIUM)
+
+- B-002: usb / connected / USBSTOR (MEDIUM)
+
+- B-003: lnk / accessed / Employee_Salaries.xlsx (MEDIUM)
+
+- B-004: office / accessed / Customer_Database.csv (MEDIUM)
+
+- B-005: filesystem / copied / Employee_Salaries.xlsx (MEDIUM)
+
+- B-006: filesystem / copied / Customer_Database.csv (MEDIUM)
+
+- B-007: archive / archived / Project_Files.zip (MEDIUM)
+
+- B-008: recycle_bin / deleted / Project_Apollo.pdf (MEDIUM)
+
+- B-009: usb / disconnected / BACKUP_DRIVE (MEDIUM)
+
+## Unified Timeline
+
+- 2026-09-15T09:00:00+05:30 — A-001 — Interactive laboratory user session
+
+- 2026-09-15T09:03:00+05:30 — A-002 — Removable storage device observed
+
+- 2026-09-15T09:06:00+05:30 — A-003 — Normal test file created on lab USB
+
+- 2026-09-15T09:10:00+05:30 — A-004 — Device-removal observation
+
+- 2026-09-15T10:00:00+05:30 — B-001 — Interactive laboratory user session
+
+- 2026-09-15T10:04:00+05:30 — B-002 — Registry device identity observation
+
+- 2026-09-15T10:07:00+05:30 — B-003 — Shortcut artifact associated with classified file
+
+- 2026-09-15T10:08:00+05:30 — B-004 — Recent-document observation
+
+- 2026-09-15T10:10:00+05:30 — B-005 — Destination-side file entry on laboratory USB
+
+- 2026-09-15T10:11:00+05:30 — B-006 — Destination-side file entry on laboratory USB
+
+- 2026-09-15T10:13:00+05:30 — B-007 — ZIP archive created during device session
+
+- 2026-09-15T10:14:00+05:30 — B-008 — Temporary classified-file copy deletion observation
+
+- 2026-09-15T10:18:00+05:30 — B-009 — Device-removal observation
+
+- unknown — META-A — 
+
+- unknown — META-B — 
+
+## Correlations
+
+- CORR-001 USER_SESSION (MEDIUM): User-session artifact observed
+
+- CORR-002 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact included when available
+
+- CORR-003 USER_SESSION (MEDIUM): User-session artifact observed
+
+- CORR-004 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact included when available
+
+- CORR-005 POSSIBLE_TRANSFER_SESSION (HIGH): USB device activity observed; Sensitive-file activity occurred within the configured time window; Employee user-session artifact corroborates temporal association; Destination-side file artifact was observed on removable media; Archive activity occurred in the same experiment
+
+- CORR-006 SENSITIVE_FILE_ACTIVITY (MEDIUM): Project-classified sensitive files have activity artifacts
+
+- CORR-007 ARCHIVE_ACTIVITY (MEDIUM): Archive creation artifact observed; intent is not established
+
+- CORR-008 POSSIBLE_CONCEALMENT (LOW): Rename or deletion artifact observed; Artifact presence alone does not establish malicious intent
+
+## Hypothesis Evaluation
+
+### H1 — SUPPORTED (HIGH)
+- USB connection artifacts support device presence
+
+### H2 — SUPPORTED (MEDIUM)
+- User-associated sensitive-file artifacts were observed
+
+### H3 — SUPPORTED (HIGH)
+- USB device activity observed
+- Sensitive-file activity occurred within the configured time window
+- Employee user-session artifact corroborates temporal association
+- Destination-side file artifact was observed on removable media
+- Archive activity occurred in the same experiment
+
+### H4 — PARTIALLY_SUPPORTED (MEDIUM)
+- Rename or deletion activity is consistent with possible concealment
+- Artifact presence alone does not establish malicious intent
+
+## Observation, Inference, Conclusion
+
+**Observation:** Normalized artifact records describe device and file activity.
+
+**Inference:** Temporal relationships are consistent with the generated correlation events.
+
+**Conclusion:** The combination of device, filesystem, user-session, and application artifacts strongly supports the simulated data-transfer hypothesis. No single artifact independently establishes the complete transfer sequence.
+
+## Experimental Score
+
+Score: **13**. This is an experimental project model and is NOT an established forensic standard.
+
+## Limitations
+
+- Simulated laboratory environment
+
+- Artifact availability depends on Windows configuration
+
+- Timestamp sources have different semantics and reliability
+
+- USB presence alone does not establish transfer
+
+- Correlation does not establish intent
+
+- The experimental score is not a forensic standard
+
+## Appendix — Disclaimer
+
+This system is an educational digital-forensics research platform operating on a controlled laboratory dataset. Findings represent an analytical interpretation of the supplied artifacts and should not be treated as a substitute for a validated forensic methodology in a real investigation.
+</pre>

@@ -1,0 +1,9 @@
+disclaimer: "This scoring system is an experimental model developed for this project and is NOT an established forensic standard."
+rules:
+  usb_connection: 2
+  sensitive_file_access: 2
+  archive_creation: 2
+  deleted_sensitive_file: 2
+  matching_destination_file: 3
+  user_session_correlation: 2
+

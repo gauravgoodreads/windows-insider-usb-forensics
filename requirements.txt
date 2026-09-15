@@ -1,0 +1,6 @@
+Flask>=3.0,<4
+PyYAML>=6.0,<7
+jsonschema>=4.20,<5
+pytest>=8.0,<9
+reportlab>=4.0,<5
+

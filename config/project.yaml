@@ -1,0 +1,24 @@
+project:
+  name: "Forensic Investigation of Simulated Insider Data Exfiltration via Removable USB Storage on Windows"
+  case_id: "INSIDER-USB-001"
+  investigator: "Student Investigator"
+  timezone: "Asia/Kolkata"
+victim:
+  hostname: "CORP-PC01"
+  username: "employee01"
+  os: "Windows 10/11"
+company:
+  name: "Example Corporation"
+usb:
+  expected_label: "BACKUP_DRIVE"
+analysis:
+  correlation_window_minutes: 20
+  allowed_windows: [5, 10, 15, 20, 30, 60]
+  sensitive_patterns:
+    Employee_Salaries.xlsx: HIGHLY_SENSITIVE
+    Customer_Database.csv: HIGHLY_SENSITIVE
+    Project_Apollo.pdf: SENSITIVE
+    Company_Strategy.docx: SENSITIVE
+scoring:
+  enabled: true
+

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "insider-usb-forensics"
+version = "1.0.0"
+description = "Offline educational Windows USB forensic correlation platform"
+requires-python = ">=3.11"
+dependencies = ["Flask>=3.0,<4", "PyYAML>=6,<7", "jsonschema>=4.20,<5", "reportlab>=4,<5"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+

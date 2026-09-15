@@ -1,0 +1,1 @@
+{"artifact_id":"META-A","artifact_type":"simulation_metadata","experiment_id":"EXP-A","experiment":"EXP-A","type":"legitimate_usb","hostname":"CORP-PC01","user":"employee01","scenario":"Normal backup","source":"investigator-provided metadata","confidence":"LOW","notes":"SIMULATION METADATA — not forensic evidence"}

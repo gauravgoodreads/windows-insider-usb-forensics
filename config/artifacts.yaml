@@ -1,0 +1,8 @@
+accepted_types: [filesystem, registry, usb, event_log, prefetch, lnk, jump_list, office, recycle_bin, archive, user_session, application, simulation_metadata]
+timestamp_types: [created, modified, accessed, deleted, executed, connected, disconnected, logged_on, logged_off, artifact_generated]
+confidence: [LOW, MEDIUM, HIGH]
+evidence_language:
+  low: "is consistent with"
+  medium: "supports"
+  high: "strongly supports"
+
