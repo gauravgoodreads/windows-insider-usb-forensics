@@ -1,9 +1,10 @@
 from __future__ import annotations
 import json, os, sqlite3, sys
 from pathlib import Path
-from flask import Flask, abort, jsonify, render_template, request
+from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 ROOT=Path(__file__).resolve().parents[1]; sys.path.insert(0,str(ROOT))
 from forensic.pipeline import run
+from forensic.config import project_config, load_yaml
 DB=Path(os.getenv("FORENSICS_DB",ROOT/"data/cases/insider_usb.db")).resolve()
 app=Flask(__name__); app.config["MAX_CONTENT_LENGTH"]=10*1024*1024
 def rows(sql,args=()):
@@ -15,8 +16,8 @@ def payloads(table,order="rowid"):
  return [json.loads(r["payload"]) for r in rows(f"SELECT payload FROM {table} ORDER BY {order}")]
 @app.get("/")
 def index():
- arts=payloads("artifacts","timestamp"); cors=payloads("correlations"); hyps=payloads("hypotheses","id"); devices=sorted({a.get("device") for a in arts if a.get("device")}); files=sorted({a.get("filename") for a in arts if a.get("classification") not in (None,"NORMAL")});
- return render_template("index.html",artifacts=arts,correlations=cors,hypotheses=hyps,devices=devices,files=files)
+ arts=payloads("artifacts","timestamp"); cors=payloads("correlations"); hyps=payloads("hypotheses","id"); devices=sorted({a.get("device") for a in arts if a.get("device")}); files=sorted({a.get("filename") for a in arts if a.get("classification") not in (None,"NORMAL")}); case=rows("SELECT * FROM cases LIMIT 1")[0]; evidence_count=rows("SELECT COUNT(*) AS total FROM evidence_items")[0]["total"]; sessions=sum(1 for a in arts if a.get("artifact_type")=="user_session")
+ return render_template("index.html",case=case,evidence_count=evidence_count,sessions=sessions,artifacts=arts,correlations=cors,hypotheses=hyps,devices=devices,files=files)
 @app.get("/artifact/<artifact_id>")
 def artifact(artifact_id):
  found=rows("SELECT payload FROM artifacts WHERE artifact_id=?",(artifact_id,));
@@ -34,7 +35,7 @@ def devices_page():
 def files_page():
  arts=payloads("artifacts","timestamp"); names=sorted({a.get("filename") for a in arts if a.get("classification") not in (None,"NORMAL")}); return render_template("files.html",files=[{"name":name,"evidence":[a for a in arts if a.get("filename")==name]} for name in names])
 @app.get("/timeline")
-def timeline_page(): return render_template("collection.html",title="Unified Timeline",description="Chronological normalized records; timestamps retain their stated semantics.",items=payloads("artifacts","timestamp"),kind="timeline")
+def timeline_page(): return render_template("timeline.html",items=payloads("artifacts","timestamp"))
 @app.get("/hypotheses")
 def hypotheses_page(): return render_template("hypotheses.html",hypotheses=payloads("hypotheses","id"))
 @app.get("/correlations")
@@ -45,8 +46,14 @@ def experiments_page():
  return render_template("experiments.html",rows=[{"feature":label,"a":any(fn(x) for x in arts if x.get("experiment")=="EXP-A"),"b":any(fn(x) for x in arts if x.get("experiment")=="EXP-B")} for label,fn in features])
 @app.get("/reports")
 def reports_page(): return render_template("reports.html",reports=sorted((ROOT/"outputs").glob("*")) if (ROOT/"outputs").exists() else [])
+@app.get("/reports/download/<path:filename>")
+def report_download(filename):
+ if Path(filename).name != filename or Path(filename).suffix.lower() not in {".pdf",".html",".md",".json",".csv"}: abort(404)
+ return send_from_directory(ROOT/"outputs",filename,as_attachment=True)
 @app.get("/custody")
 def custody_page(): return render_template("custody.html",entries=rows("SELECT * FROM chain_of_custody ORDER BY timestamp"),audit=rows("SELECT * FROM audit_log ORDER BY timestamp DESC"))
+@app.get("/settings")
+def settings_page(): return render_template("settings.html",project=project_config(),scoring=load_yaml(ROOT/"config"/"scoring.yaml"))
 @app.get("/api/cases")
 def api_cases(): return jsonify(rows("SELECT * FROM cases"))
 @app.get("/api/cases/<case_id>")

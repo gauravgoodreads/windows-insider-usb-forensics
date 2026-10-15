@@ -18,12 +18,16 @@ CREATE TABLE IF NOT EXISTS audit_log(id INTEGER PRIMARY KEY,timestamp TEXT DEFAU
 def connect(path: str | Path) -> sqlite3.Connection:
     target=Path(path); target.parent.mkdir(parents=True,exist_ok=True); db=sqlite3.connect(target); db.row_factory=sqlite3.Row; db.executescript(SCHEMA); return db
 
-def populate(db: sqlite3.Connection, config: dict, artifacts: Iterable[Artifact], correlations: Iterable[CorrelationEvent], hypotheses: Iterable[Hypothesis]) -> None:
+def populate(db: sqlite3.Connection, config: dict, artifacts: Iterable[Artifact], correlations: Iterable[CorrelationEvent], hypotheses: Iterable[Hypothesis], evidence: dict | None = None) -> None:
     cid=config["project"]["case_id"]
     db.execute("INSERT OR REPLACE INTO cases(case_id,title,investigator) VALUES(?,?,?)",(cid,config["project"]["name"],config["project"]["investigator"]))
     db.execute("DELETE FROM artifacts WHERE case_id=?",(cid,)); db.execute("DELETE FROM correlations WHERE case_id=?",(cid,)); db.execute("DELETE FROM hypotheses WHERE case_id=?",(cid,))
     for a in artifacts: db.execute("INSERT INTO artifacts VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",(a.artifact_id,cid,a.to_dict()["timestamp"],a.artifact_type,a.source,a.user,a.device,a.filename,a.action,a.confidence,a.experiment,json.dumps(a.to_dict())))
     for c in correlations: db.execute("INSERT INTO correlations VALUES(?,?,?,?,?)",(c.event_id,cid,c.type,c.confidence,json.dumps(c.to_dict())))
     for h in hypotheses: db.execute("INSERT INTO hypotheses VALUES(?,?,?,?,?)",(h.id,cid,h.assessment,h.confidence,json.dumps(h.to_dict())))
+    if evidence:
+        db.execute("INSERT OR REPLACE INTO evidence_items(evidence_id,case_id,filename,sha256,size,examiner,acquired_at,notes) VALUES(?,?,?,?,?,?,?,?)",(evidence["evidence_id"],cid,evidence["filename"],evidence["sha256"],evidence["size"],config["project"]["investigator"],evidence["recorded_at"],evidence["notes"]))
+        db.execute("DELETE FROM chain_of_custody WHERE evidence_id=?",(evidence["evidence_id"],))
+        db.execute("INSERT INTO chain_of_custody(timestamp,action,person,evidence_id,source,destination,hash,notes) VALUES(?,?,?,?,?,?,?,?)",(evidence["recorded_at"],"Artifact export bundle ingested",config["project"]["investigator"],evidence["evidence_id"],config["victim"]["hostname"],"Offline analysis workspace",evidence["sha256"],evidence["notes"]))
     db.execute("INSERT INTO audit_log(case_id,action,details) VALUES(?,?,?)",(cid,"analysis executed",f"Stored normalized artifacts and derived results")); db.commit()
 

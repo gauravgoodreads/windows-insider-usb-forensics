@@ -17,6 +17,7 @@ def main() -> int:
  def demo():
   temp=Path(tempfile.mkdtemp(prefix="usb-forensics-validation-")); holder["r"]=run(ROOT/"data/sample",temp,temp/"case.db")
  check("Database and sample artifacts",demo)
+ check("Evidence inventory and custody",lambda: (_ for _ in ()).throw(RuntimeError("evidence bundle missing")) if not holder["r"].get("evidence",{}).get("sha256") else None)
  check("Normalization",lambda: (_ for _ in ()).throw(RuntimeError("no artifacts")) if holder["r"]["artifact_count"]<10 else None)
  check("Correlation",lambda: (_ for _ in ()).throw(RuntimeError("no transfer correlation")) if not any(c.type=="POSSIBLE_TRANSFER_SESSION" for c in holder["r"]["correlations"]) else None)
  check("Hypotheses",lambda: (_ for _ in ()).throw(RuntimeError("H3 not supported")) if next(h for h in holder["r"]["hypotheses"] if h.id=="H3").assessment!="SUPPORTED" else None)

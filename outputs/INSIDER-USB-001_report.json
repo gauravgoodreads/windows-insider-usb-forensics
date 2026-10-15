@@ -5,6 +5,16 @@
     "investigator": "Student Investigator",
     "timezone": "Asia/Kolkata"
   },
+  "evidence_inventory": [
+    {
+      "evidence_id": "EVD-DEMO-001",
+      "filename": "sample (artifact export bundle)",
+      "sha256": "1ee1023f9cc8f61f9c9cef5ff76795694799c3e1f7fd60296a04626dc8d6644e",
+      "size": 5251,
+      "recorded_at": "2026-09-15T08:55:00+05:30",
+      "notes": "Synthetic demonstration export bundle; not an acquired disk image and not real case evidence."
+    }
+  ],
   "artifacts": [
     {
       "artifact_id": "META-A",

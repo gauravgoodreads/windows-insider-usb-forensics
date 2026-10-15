@@ -17,11 +17,14 @@ Offline Windows 10/11 virtual-machine experiments using fictional Example Corpor
 
 ## Evidence Inventory
 
+- EVD-DEMO-001 | sample (artifact export bundle) | SHA-256 `1ee1023f9cc8f61f9c9cef5ff76795694799c3e1f7fd60296a04626dc8d6644e` | 5251 bytes
+- Synthetic demonstration export bundle; not an acquired disk image and not real case evidence.
+
 Raw exports are preserved separately; normalized records retain their original payload and provenance identifiers.
 
 ## Acquisition Methodology and Hash Verification
 
-Acquire a forensic image from the stopped lab VM, hash it, record custody, and examine only a verified copy.
+The included demo hashes the synthetic export bundle for provenance. A real experiment must separately acquire the stopped VM and USB images, hash them, record custody, and examine only verified copies.
 
 ## Artifact, USB, User, and Filesystem Analysis
 
