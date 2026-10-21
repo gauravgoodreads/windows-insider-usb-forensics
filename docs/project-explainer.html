@@ -1,0 +1,785 @@
+<title>USB Insider Forensics Explained</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one calm reading column like a case file, with wide figures that scroll sideways on their own when narrow. */
+:root {
+  --bg: #f3f6f7;
+  --surface: #ffffff;
+  --ink: #13202a;
+  --muted: #566875;
+  --line: #d3dce1;
+  --accent: #0d6b88;
+  --accent-soft: #e1eff4;
+  --clue: #b07d00;
+  --clue-soft: #fbf1d6;
+  --ok: #2b7a4b;
+  --ok-soft: #e2f2e8;
+  --warn: #9a6200;
+  --warn-soft: #fbeed6;
+  --risk: #a3402f;
+  --risk-soft: #f8e4df;
+  --band-sim: #eef1fa;
+  --band-acq: #f6f0e4;
+  --band-ana: #e6f2f4;
+  --band-pre: #eef3ea;
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  --f-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d151b; --surface: #15202a; --ink: #e3ebf0; --muted: #94a6b3; --line: #2a3a46;
+    --accent: #5cc0dd; --accent-soft: #15323d; --clue: #f0c04a; --clue-soft: #3a3016;
+    --ok: #6fcf97; --ok-soft: #173326; --warn: #f2b85b; --warn-soft: #3a2c14; --risk: #f08b78; --risk-soft: #3d1f1a;
+    --band-sim: #18203a; --band-acq: #2a2416; --band-ana: #13292f; --band-pre: #1b2a1d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d151b; --surface: #15202a; --ink: #e3ebf0; --muted: #94a6b3; --line: #2a3a46;
+  --accent: #5cc0dd; --accent-soft: #15323d; --clue: #f0c04a; --clue-soft: #3a3016;
+  --ok: #6fcf97; --ok-soft: #173326; --warn: #f2b85b; --warn-soft: #3a2c14; --risk: #f08b78; --risk-soft: #3d1f1a;
+  --band-sim: #18203a; --band-acq: #2a2416; --band-ana: #13292f; --band-pre: #1b2a1d;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 1.0625rem; line-height: 1.65;
+}
+.wrap {
+  max-width: 54rem; margin: 0 auto;
+  padding-block: 2.5rem 5rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 3.5rem;
+}
+h1, h2, h3 { font-family: var(--f-display); font-stretch: 85%; line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 750; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+p { margin: 0; }
+section { display: grid; gap: 1.1rem; scroll-margin-top: 1rem; }
+.eyebrow {
+  font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); font-weight: 500;
+}
+.lead { font-size: 1.2rem; color: var(--ink); max-width: 40rem; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-mono); font-size: 0.88em; }
+code { font-family: var(--f-mono); font-size: 0.86em; background: var(--accent-soft); padding: 0.08em 0.35em; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 3px solid var(--clue); outline-offset: 3px; border-radius: 4px; }
+
+/* Case header */
+.case-head { display: grid; gap: 1.2rem; }
+.tag {
+  justify-self: start; display: inline-flex; gap: 0.6rem; align-items: center;
+  font-family: var(--f-mono); font-size: 0.78rem; letter-spacing: 0.06em;
+  border: 1.5px dashed var(--clue); color: var(--clue); background: var(--clue-soft);
+  padding: 0.3rem 0.7rem; border-radius: 3px;
+}
+.facts { display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; font-size: 0.92rem; color: var(--muted); }
+.facts b { color: var(--ink); font-family: var(--f-mono); font-weight: 500; font-size: 0.9em; }
+.question {
+  border-left: 4px solid var(--accent); padding: 0.4rem 0 0.4rem 1.1rem;
+  font-size: 1.25rem; font-family: var(--f-display); font-stretch: 92%; font-weight: 600; max-width: 42rem;
+}
+nav.toc { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+nav.toc a {
+  font-size: 0.86rem; text-decoration: none; color: var(--ink);
+  border: 1px solid var(--line); background: var(--surface); padding: 0.28rem 0.7rem; border-radius: 999px;
+}
+nav.toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Generic blocks */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem 1.3rem; display: grid; gap: 0.7rem; min-width: 0; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+.callout { background: var(--clue-soft); border: 1px solid var(--clue); border-radius: 10px; padding: 1rem 1.2rem; display: grid; gap: 0.4rem; }
+.callout strong { color: var(--ink); }
+ul.clean, ol.clean { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; }
+.figure { display: grid; gap: 0.6rem; }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.scroll svg { display: block; min-width: 640px; width: 100%; height: auto; }
+.caption { font-size: 0.9rem; color: var(--muted); }
+
+/* SVG diagram tokens */
+.d-box { fill: var(--surface); stroke: var(--line); stroke-width: 1.5; }
+.d-box-key { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+.d-box-clue { fill: var(--clue-soft); stroke: var(--clue); stroke-width: 1.5; }
+.d-box-next { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.d-t { fill: var(--ink); font-family: var(--f-body); font-size: 13px; }
+.d-tb { fill: var(--ink); font-family: var(--f-body); font-size: 13px; font-weight: 700; }
+.d-s { fill: var(--muted); font-family: var(--f-body); font-size: 11.5px; }
+.d-lab { fill: var(--muted); font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.1em; }
+.d-line { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.d-dash { stroke: var(--muted); stroke-width: 1.4; fill: none; stroke-dasharray: 4 4; }
+.d-head { fill: var(--muted); }
+.b-sim { fill: var(--band-sim); } .b-acq { fill: var(--band-acq); } .b-ana { fill: var(--band-ana); } .b-pre { fill: var(--band-pre); }
+.tl-win { fill: var(--accent-soft); }
+.tl-axis { stroke: var(--line); stroke-width: 1.5; }
+.tl-tick { stroke: var(--line); stroke-width: 1; }
+.dot-user { fill: var(--muted); } .dot-usb { fill: var(--accent); } .dot-file { fill: var(--clue); } .dot-risk { fill: var(--risk); }
+.dot-num { fill: var(--surface); font-family: var(--f-mono); font-size: 10.5px; font-weight: 500; text-anchor: middle; }
+
+/* Tables */
+table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+th, td { text-align: left; vertical-align: top; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--line); }
+th { font-family: var(--f-mono); font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.tbl table { min-width: 36rem; }
+.yes { color: var(--ok); font-weight: 700; } .no { color: var(--muted); }
+.pill { display: inline-block; font-family: var(--f-mono); font-size: 0.74rem; letter-spacing: 0.04em; padding: 0.12rem 0.5rem; border-radius: 999px; white-space: nowrap; font-weight: 500; }
+.p-ok { background: var(--ok-soft); color: var(--ok); }
+.p-warn { background: var(--warn-soft); color: var(--warn); }
+.p-info { background: var(--accent-soft); color: var(--accent); }
+.p-risk { background: var(--risk-soft); color: var(--risk); }
+
+/* Events list */
+.events { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1rem; }
+.events ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; font-size: 0.93rem; }
+.events li { display: grid; grid-template-columns: 1.7rem 3.2rem 1fr; gap: 0.4rem; align-items: baseline; }
+.n { display: inline-grid; place-items: center; width: 1.35rem; height: 1.35rem; border-radius: 50%; color: var(--surface); font-family: var(--f-mono); font-size: 0.72rem; }
+.n.user { background: var(--muted); } .n.usb { background: var(--accent); } .n.file { background: var(--clue); } .n.risk { background: var(--risk); }
+.time { font-family: var(--f-mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* Score bars */
+.score { display: grid; gap: 0.5rem; }
+.score-row { display: grid; grid-template-columns: minmax(0, 15rem) 1fr 2rem; gap: 0.8rem; align-items: center; font-size: 0.94rem; }
+.bar { height: 0.7rem; background: var(--accent-soft); border-radius: 4px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); }
+.score-row .pts { font-family: var(--f-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.score-total { border-top: 1px solid var(--line); padding-top: 0.6rem; display: flex; justify-content: space-between; font-weight: 700; }
+
+/* Demo script */
+.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 0.8rem; }
+.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem 1.1rem 0.9rem 3.4rem; position: relative; display: grid; gap: 0.3rem; min-width: 0; }
+.steps li::before { content: counter(s); position: absolute; left: 1rem; top: 0.85rem; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--accent); color: var(--surface); display: grid; place-items: center; font-family: var(--f-mono); font-size: 0.85rem; }
+.steps .page { font-family: var(--f-display); font-stretch: 90%; font-weight: 700; font-size: 1.05rem; }
+.say { font-style: italic; border-left: 3px solid var(--clue); padding-left: 0.7rem; }
+.speech { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1.2rem 1.4rem; font-size: 1.08rem; display: grid; gap: 0.8rem; }
+
+/* Q&A */
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0.75rem 1rem; }
+details + details { margin-top: 0.5rem; }
+summary { cursor: pointer; font-weight: 700; }
+details p { margin-top: 0.5rem; }
+.dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.dodont .panel h3 { font-size: 1rem; }
+.do h3 { color: var(--ok); } .dont h3 { color: var(--risk); }
+
+/* Status */
+.status { display: grid; gap: 0.6rem; }
+.status-row { display: grid; grid-template-columns: 7.5rem 1fr; gap: 0.8rem; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0.8rem 1rem; }
+.status-row .pill { justify-self: start; }
+dl.gloss { display: grid; grid-template-columns: minmax(0, 11rem) 1fr; gap: 0.5rem 1.2rem; margin: 0; }
+dl.gloss dt { font-weight: 700; }
+dl.gloss dd { margin: 0; color: var(--ink); }
+pre.cmd { margin: 0; font-family: var(--f-mono); font-size: 0.85rem; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem 1rem; overflow-x: auto; }
+footer { font-size: 0.88rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 1.2rem; }
+@media (max-width: 34rem) {
+  dl.gloss { grid-template-columns: 1fr; gap: 0.15rem; }
+  dl.gloss dd { margin-bottom: 0.6rem; }
+  .status-row { grid-template-columns: 1fr; }
+  .score-row { grid-template-columns: 1fr 2rem; }
+  .score-row .bar { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+
+<header class="case-head">
+  <span class="tag">CASE INSIDER-USB-001 · LAB EXERCISE · FICTIONAL DATA</span>
+  <h1>USB Insider Forensics: Detecting Data Exfiltration via Removable Media on Windows</h1>
+  <p class="question">Can the small traces Windows leaves behind tell an ordinary USB backup apart from someone copying sensitive company files to a USB drive?</p>
+  <div class="facts">
+    <span>Workstation <b>CORP-PC01</b></span>
+    <span>User <b>employee01</b></span>
+    <span>USB label <b>BACKUP_DRIVE</b></span>
+    <span>Company <b>Example Corporation (fictional)</b></span>
+  </div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#idea">The idea</a>
+    <a href="#experiments">Two experiments</a>
+    <a href="#system">How it works</a>
+    <a href="#clues">Joining clues</a>
+    <a href="#timeline">Timeline</a>
+    <a href="#hypotheses">H1–H4 results</a>
+    <a href="#score">Score</a>
+    <a href="#lab">Real evidence</a>
+    <a href="#integrity">Evidence safety</a>
+    <a href="#explain">Explaining it to sir</a>
+    <a href="#viva">Viva questions</a>
+    <a href="#status">Status today</a>
+    <a href="#glossary">Glossary</a>
+    <a href="#files">Project files</a>
+  </nav>
+</header>
+
+<section id="idea">
+  <span class="eyebrow">The question</span>
+  <h2>The idea in one minute</h2>
+  <p class="lead">Think of a detective at a crime scene. One footprint does not prove who did it. But a footprint, a fingerprint, a CCTV clip and a receipt that all point to the same person at the same time make a strong case.</p>
+  <p>Windows works the same way. Every time someone plugs in a USB drive, opens a file or copies something, Windows quietly writes small records in different places. We call each record an <strong>artifact</strong>. One artifact alone proves very little. This project collects many artifacts, puts them on one timeline, and checks whether they agree with each other.</p>
+  <div class="callout">
+    <strong>The main lesson of the project</strong>
+    <p>Plugging in a USB drive is normal. It happens in both the innocent and the suspicious experiment. So "a USB was used" is weak evidence. The case becomes strong only when several independent clues agree inside the same USB time window, especially a copy of the sensitive file appearing <em>on the USB itself</em> and the user's login session at that time.</p>
+  </div>
+  <div class="two">
+    <div class="panel">
+      <h3>What the project does</h3>
+      <ul class="clean">
+        <li>Compares one normal and one suspicious scenario on the same PC, user and USB drive</li>
+        <li>Collects real evidence from any Windows PC with a read-only script, with no virtual machine needed</li>
+        <li>Keeps the evidence safe with hashes and a custody log</li>
+        <li>Reads Windows artifacts, joins them, and judges four questions (H1–H4)</li>
+        <li>Shows everything in a dashboard and in PDF, HTML and CSV reports</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>What it does not do</h3>
+      <ul class="clean">
+        <li>It does not spy on any real person</li>
+        <li>It uses no real company data. Every "sensitive" file is fictional</li>
+        <li>It never says someone is guilty or explains their motive</li>
+        <li>It does not claim to be ready for use in a real court</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="experiments">
+  <span class="eyebrow">The method</span>
+  <h2>Two experiments, one clean starting point</h2>
+  <p>A good experiment needs a <strong>control</strong>: a normal case to compare against. Both experiments use the same computer, the same user, the same USB drive and the same fictional files. So the only real difference between them is what the user did.</p>
+  <div class="two">
+    <div class="panel">
+      <span class="pill p-info">Experiment A · the control</span>
+      <h3>Normal USB backup</h3>
+      <p>The user logs in, plugs in <code>BACKUP_DRIVE</code>, copies an ordinary <code>Readme.txt</code>, and unplugs the drive.</p>
+    </div>
+    <div class="panel">
+      <span class="pill p-risk">Experiment B · the simulated incident</span>
+      <h3>Copying fictional sensitive files</h3>
+      <p>The user opens fictional salary and customer files, copies them to the USB, makes a ZIP archive, and deletes a temporary copy of a project file.</p>
+    </div>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Clue (artifact)</th><th>Experiment A</th><th>Experiment B</th><th>Does it tell them apart?</th></tr></thead>
+      <tbody>
+        <tr><td>User logged in</td><td class="yes">Yes</td><td class="yes">Yes</td><td>No. Both have it</td></tr>
+        <tr><td>USB drive connected and removed</td><td class="yes">Yes</td><td class="yes">Yes</td><td>No. Both have it</td></tr>
+        <tr><td>Sensitive file opened (shortcut / recent document)</td><td class="no">No</td><td class="yes">Yes</td><td>Yes</td></tr>
+        <tr><td>Sensitive file appears on the USB</td><td class="no">No</td><td class="yes">Yes</td><td>Yes, strongly</td></tr>
+        <tr><td>ZIP archive created</td><td class="no">No</td><td class="yes">Yes</td><td>Somewhat</td></tr>
+        <tr><td>File deleted (Recycle Bin)</td><td class="no">No</td><td class="yes">Yes</td><td>Somewhat, but intent is unknown</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="caption">USB activity appears in both experiments. That is why the project never treats "USB was used" as proof of copying.</p>
+</section>
+
+<section id="system">
+  <span class="eyebrow">The method</span>
+  <h2>How the whole system works</h2>
+  <p>The project is built in four layers, and they are kept apart on purpose. The layer that <em>creates</em> the activity is never used as proof. Proof comes only from the evidence that was preserved and then examined.</p>
+  <div class="figure">
+    <div class="scroll" role="img" aria-label="Pipeline diagram in four layers: simulation, acquisition, analysis and presentation">
+      <svg viewBox="0 0 720 610" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+        </defs>
+        <!-- Band 1: Simulation -->
+        <rect x="10" y="10" width="700" height="140" rx="10" class="b-sim"/>
+        <text x="26" y="32" class="d-lab">1 · EVIDENCE SOURCES: KNOWN SCENARIOS OR A REAL PC</text>
+        <rect x="30" y="48" width="200" height="84" rx="8" class="d-box"/>
+        <text x="130" y="84" text-anchor="middle" class="d-tb">Windows PC CORP-PC01</text>
+        <text x="130" y="104" text-anchor="middle" class="d-s">fictional company files</text>
+        <rect x="300" y="44" width="390" height="40" rx="8" class="d-box"/>
+        <text x="316" y="69" class="d-t"><tspan class="d-tb">Experiment A</tspan> · normal backup of Readme.txt</text>
+        <rect x="300" y="96" width="390" height="40" rx="8" class="d-box"/>
+        <text x="316" y="121" class="d-t"><tspan class="d-tb">Experiment B</tspan> · copy fictional sensitive files</text>
+        <path d="M232,80 C265,80 265,64 297,64" class="d-line" marker-end="url(#ah)"/>
+        <path d="M232,100 C265,100 265,116 297,116" class="d-line" marker-end="url(#ah)"/>
+        <text x="236" y="146" class="d-s">or: read-only collector on any real PC</text>
+        <!-- arrow 1-2 -->
+        <path d="M360,150 L360,178" class="d-line" marker-end="url(#ah)"/>
+        <!-- Band 2: Acquisition -->
+        <rect x="10" y="180" width="700" height="120" rx="10" class="b-acq"/>
+        <text x="26" y="202" class="d-lab">2 · ACQUISITION: PRESERVE THE EVIDENCE</text>
+        <rect x="30" y="218" width="200" height="64" rx="8" class="d-box"/>
+        <text x="130" y="246" text-anchor="middle" class="d-tb">Export the artifacts</text>
+        <text x="130" y="264" text-anchor="middle" class="d-s">collector or forensic tool</text>
+        <rect x="260" y="218" width="200" height="64" rx="8" class="d-box"/>
+        <text x="360" y="246" text-anchor="middle" class="d-tb">Seal the export</text>
+        <text x="360" y="264" text-anchor="middle" class="d-s">kept unchanged, read only</text>
+        <rect x="490" y="218" width="200" height="64" rx="8" class="d-box-key"/>
+        <text x="590" y="246" text-anchor="middle" class="d-tb">SHA-256 hash + custody</text>
+        <text x="590" y="264" text-anchor="middle" class="d-s">digital fingerprint and log</text>
+        <path d="M232,250 L257,250" class="d-line" marker-end="url(#ah)"/>
+        <path d="M462,250 L487,250" class="d-line" marker-end="url(#ah)"/>
+        <!-- arrow 2-3 -->
+        <path d="M360,300 L360,328" class="d-line" marker-end="url(#ah)"/>
+        <!-- Band 3: Analysis -->
+        <rect x="10" y="330" width="700" height="120" rx="10" class="b-ana"/>
+        <text x="26" y="352" class="d-lab">3 · ANALYSIS: READ VERIFIED COPIES ONLY</text>
+        <rect x="30" y="368" width="120" height="64" rx="8" class="d-box"/>
+        <text x="90" y="396" text-anchor="middle" class="d-tb">Exports</text>
+        <text x="90" y="414" text-anchor="middle" class="d-s">from forensic tools</text>
+        <rect x="165" y="368" width="120" height="64" rx="8" class="d-box"/>
+        <text x="225" y="396" text-anchor="middle" class="d-tb">Ingest</text>
+        <text x="225" y="414" text-anchor="middle" class="d-s">raw record kept</text>
+        <rect x="300" y="368" width="120" height="64" rx="8" class="d-box"/>
+        <text x="360" y="396" text-anchor="middle" class="d-tb">Normalize</text>
+        <text x="360" y="414" text-anchor="middle" class="d-s">one common format</text>
+        <rect x="435" y="368" width="120" height="64" rx="8" class="d-box-key"/>
+        <text x="495" y="396" text-anchor="middle" class="d-tb">Correlate</text>
+        <text x="495" y="414" text-anchor="middle" class="d-s">join by time, user…</text>
+        <rect x="570" y="368" width="120" height="64" rx="8" class="d-box-key"/>
+        <text x="630" y="396" text-anchor="middle" class="d-tb">Judge H1–H4</text>
+        <text x="630" y="414" text-anchor="middle" class="d-s">with limitations</text>
+        <path d="M152,400 L162,400" class="d-line" marker-end="url(#ah)"/>
+        <path d="M287,400 L297,400" class="d-line" marker-end="url(#ah)"/>
+        <path d="M422,400 L432,400" class="d-line" marker-end="url(#ah)"/>
+        <path d="M557,400 L567,400" class="d-line" marker-end="url(#ah)"/>
+        <!-- arrow 3-4 -->
+        <path d="M360,450 L360,478" class="d-line" marker-end="url(#ah)"/>
+        <!-- Band 4: Presentation -->
+        <rect x="10" y="480" width="700" height="120" rx="10" class="b-pre"/>
+        <text x="26" y="502" class="d-lab">4 · PRESENTATION: SAME RESULTS, MANY VIEWS</text>
+        <rect x="30" y="518" width="150" height="64" rx="8" class="d-box"/>
+        <text x="105" y="546" text-anchor="middle" class="d-tb">SQLite database</text>
+        <text x="105" y="564" text-anchor="middle" class="d-s">one case store</text>
+        <rect x="200" y="518" width="150" height="64" rx="8" class="d-box"/>
+        <text x="275" y="546" text-anchor="middle" class="d-tb">Dashboard</text>
+        <text x="275" y="564" text-anchor="middle" class="d-s">11 pages, local only</text>
+        <rect x="370" y="518" width="150" height="64" rx="8" class="d-box"/>
+        <text x="445" y="546" text-anchor="middle" class="d-tb">Reports</text>
+        <text x="445" y="564" text-anchor="middle" class="d-s">PDF, HTML, MD, JSON</text>
+        <rect x="540" y="518" width="150" height="64" rx="8" class="d-box"/>
+        <text x="615" y="546" text-anchor="middle" class="d-tb">CSV exports</text>
+        <text x="615" y="564" text-anchor="middle" class="d-s">artifacts, findings, timeline</text>
+        <path d="M182,550 L197,550" class="d-line" marker-end="url(#ah)"/>
+        <path d="M352,550 L367,550" class="d-line" marker-end="url(#ah)"/>
+        <path d="M522,550 L537,550" class="d-line" marker-end="url(#ah)"/>
+      </svg>
+    </div>
+    <p class="caption">Figure 1. The four layers. Blue boxes are the most important steps to point at when explaining.</p>
+  </div>
+  <div class="two">
+    <div class="panel">
+      <h3>Normalization, in simple words</h3>
+      <p>Different Windows tools write their records in different shapes. One calls a field "DeviceName", another calls it "FriendlyName". Normalization rewrites every record into one common form, with the time, user, file, device and activity. If a value is missing, it stays missing. Nothing is guessed. The original raw record is always kept next to it.</p>
+    </div>
+    <div class="panel">
+      <h3>Correlation, in simple words</h3>
+      <p>Correlation means joining records that belong together: same user, same USB, same file, close in time (within a 20-minute window by default). Each joined group is saved with the IDs of the records it used and a plain-English reason. So anyone can check why the engine made the link.</p>
+    </div>
+  </div>
+</section>
+
+<section id="clues">
+  <span class="eyebrow">The method</span>
+  <h2>How clues are joined into a conclusion</h2>
+  <p>This is the reasoning model. Each clue on the left is weak on its own. When they fall inside the same USB time window, they support each other.</p>
+  <div class="figure">
+    <div class="scroll" role="img" aria-label="Five clues feed into one time window, which produces explainable correlations and then hypotheses with confidence and limitations">
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+        </defs>
+        <text x="20" y="16" class="d-lab">CLUES (EACH WEAK ALONE)</text>
+        <rect x="20" y="28" width="200" height="42" rx="8" class="d-box"/>
+        <text x="34" y="54" class="d-t">USB connected / removed</text>
+        <rect x="20" y="84" width="200" height="42" rx="8" class="d-box-clue"/>
+        <text x="34" y="110" class="d-t">Sensitive file opened</text>
+        <rect x="20" y="140" width="200" height="42" rx="8" class="d-box-clue"/>
+        <text x="34" y="166" class="d-tb">Same file appears on USB</text>
+        <rect x="20" y="196" width="200" height="42" rx="8" class="d-box"/>
+        <text x="34" y="222" class="d-t">User logged in at that time</text>
+        <rect x="20" y="252" width="200" height="42" rx="8" class="d-box"/>
+        <text x="34" y="278" class="d-t">ZIP made or file deleted</text>
+        <path d="M222,49 C260,49 255,150 290,158" class="d-line"/>
+        <path d="M222,105 C255,105 260,155 290,160" class="d-line"/>
+        <path d="M222,161 L288,161" class="d-line" marker-end="url(#ah2)"/>
+        <path d="M222,217 C255,217 260,166 290,163" class="d-line"/>
+        <path d="M222,273 C260,273 255,172 290,165" class="d-line"/>
+        <rect x="292" y="116" width="140" height="92" rx="10" class="d-box-key"/>
+        <text x="362" y="148" text-anchor="middle" class="d-tb">Same USB</text>
+        <text x="362" y="166" text-anchor="middle" class="d-tb">time window</text>
+        <text x="362" y="188" text-anchor="middle" class="d-s">20 minutes by default</text>
+        <path d="M434,162 L462,162" class="d-line" marker-end="url(#ah2)"/>
+        <rect x="464" y="116" width="114" height="92" rx="10" class="d-box"/>
+        <text x="521" y="148" text-anchor="middle" class="d-tb">Correlations</text>
+        <text x="521" y="168" text-anchor="middle" class="d-s">with reasons</text>
+        <text x="521" y="184" text-anchor="middle" class="d-s">and record IDs</text>
+        <path d="M580,162 L598,162" class="d-line" marker-end="url(#ah2)"/>
+        <rect x="600" y="116" width="110" height="92" rx="10" class="d-box"/>
+        <text x="655" y="148" text-anchor="middle" class="d-tb">H1–H4</text>
+        <text x="655" y="168" text-anchor="middle" class="d-s">confidence +</text>
+        <text x="655" y="184" text-anchor="middle" class="d-s">limitations</text>
+        <text x="464" y="250" class="d-s">Strongest single clue: the sensitive</text>
+        <text x="464" y="266" class="d-s">file showing up on the USB itself.</text>
+      </svg>
+    </div>
+    <p class="caption">Figure 2. Corroboration: independent clues that agree in time are much stronger than any single clue.</p>
+  </div>
+</section>
+
+<section id="timeline">
+  <span class="eyebrow">The result</span>
+  <h2>What the timeline shows</h2>
+  <p>These are the actual events in the demonstration dataset, drawn to scale. Each lane starts at the moment the user logged in. The shaded strip is the time the USB drive was plugged in.</p>
+  <div class="figure">
+    <div class="scroll" role="img" aria-label="Timeline of Experiment A with 4 events over 10 minutes and Experiment B with 9 events over 18 minutes">
+      <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg">
+        <!-- scale: x = 80 + minutes * 30 -->
+        <text x="12" y="74" class="d-tb">Exp. A</text>
+        <text x="12" y="90" class="d-s">09:00</text>
+        <text x="12" y="164" class="d-tb">Exp. B</text>
+        <text x="12" y="180" class="d-s">10:00</text>
+        <rect x="170" y="56" width="210" height="36" rx="6" class="tl-win"/>
+        <rect x="200" y="146" width="420" height="36" rx="6" class="tl-win"/>
+        <line x1="80" y1="74" x2="680" y2="74" class="tl-axis"/>
+        <line x1="80" y1="164" x2="680" y2="164" class="tl-axis"/>
+        <!-- A events -->
+        <circle cx="80" cy="74" r="10" class="dot-user"/><text x="80" y="78" class="dot-num">1</text>
+        <circle cx="170" cy="74" r="10" class="dot-usb"/><text x="170" y="78" class="dot-num">2</text>
+        <circle cx="260" cy="74" r="10" class="dot-file"/><text x="260" y="78" class="dot-num">3</text>
+        <circle cx="380" cy="74" r="10" class="dot-usb"/><text x="380" y="78" class="dot-num">4</text>
+        <!-- B events -->
+        <circle cx="80" cy="164" r="10" class="dot-user"/><text x="80" y="168" class="dot-num">1</text>
+        <circle cx="200" cy="164" r="10" class="dot-usb"/><text x="200" y="168" class="dot-num">2</text>
+        <circle cx="290" cy="164" r="10" class="dot-file"/><text x="290" y="168" class="dot-num">3</text>
+        <circle cx="320" cy="164" r="10" class="dot-file"/><text x="320" y="168" class="dot-num">4</text>
+        <circle cx="380" cy="164" r="10" class="dot-file"/><text x="380" y="168" class="dot-num">5</text>
+        <circle cx="410" cy="164" r="10" class="dot-file"/><text x="410" y="168" class="dot-num">6</text>
+        <circle cx="470" cy="164" r="10" class="dot-risk"/><text x="470" y="168" class="dot-num">7</text>
+        <circle cx="500" cy="164" r="10" class="dot-risk"/><text x="500" y="168" class="dot-num">8</text>
+        <circle cx="620" cy="164" r="10" class="dot-usb"/><text x="620" y="168" class="dot-num">9</text>
+        <!-- axis -->
+        <line x1="80" y1="212" x2="680" y2="212" class="tl-axis"/>
+        <line x1="80" y1="207" x2="80" y2="217" class="tl-tick"/><text x="80" y="234" text-anchor="middle" class="d-s">0 min</text>
+        <line x1="230" y1="207" x2="230" y2="217" class="tl-tick"/><text x="230" y="234" text-anchor="middle" class="d-s">5</text>
+        <line x1="380" y1="207" x2="380" y2="217" class="tl-tick"/><text x="380" y="234" text-anchor="middle" class="d-s">10</text>
+        <line x1="530" y1="207" x2="530" y2="217" class="tl-tick"/><text x="530" y="234" text-anchor="middle" class="d-s">15</text>
+        <line x1="680" y1="207" x2="680" y2="217" class="tl-tick"/><text x="680" y="234" text-anchor="middle" class="d-s">20 min</text>
+        <text x="380" y="40" text-anchor="middle" class="d-s">shaded = USB plugged in</text>
+      </svg>
+    </div>
+    <p class="caption">Figure 3. Grey = login, blue = USB, amber = file activity, red = archive or deletion. In B, file activity crowds inside the USB window. In A, only one ordinary file is copied.</p>
+  </div>
+  <div class="events">
+    <div class="panel">
+      <h3>Experiment A (normal)</h3>
+      <ol>
+        <li><span class="n user">1</span><span class="time">09:00</span><span>User session starts <span class="mono muted">A-001</span></span></li>
+        <li><span class="n usb">2</span><span class="time">09:03</span><span>BACKUP_DRIVE connected <span class="mono muted">A-002</span></span></li>
+        <li><span class="n file">3</span><span class="time">09:06</span><span>Readme.txt created on USB <span class="mono muted">A-003</span></span></li>
+        <li><span class="n usb">4</span><span class="time">09:10</span><span>USB removed <span class="mono muted">A-004</span></span></li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>Experiment B (simulated incident)</h3>
+      <ol>
+        <li><span class="n user">1</span><span class="time">10:00</span><span>User session starts <span class="mono muted">B-001</span></span></li>
+        <li><span class="n usb">2</span><span class="time">10:04</span><span>USB identity in Registry <span class="mono muted">B-002</span></span></li>
+        <li><span class="n file">3</span><span class="time">10:07</span><span>Shortcut to Employee_Salaries.xlsx <span class="mono muted">B-003</span></span></li>
+        <li><span class="n file">4</span><span class="time">10:08</span><span>Customer_Database.csv opened <span class="mono muted">B-004</span></span></li>
+        <li><span class="n file">5</span><span class="time">10:10</span><span>Salaries file appears on USB <span class="mono muted">B-005</span></span></li>
+        <li><span class="n file">6</span><span class="time">10:11</span><span>Customer file appears on USB <span class="mono muted">B-006</span></span></li>
+        <li><span class="n risk">7</span><span class="time">10:13</span><span>Project_Files.zip created <span class="mono muted">B-007</span></span></li>
+        <li><span class="n risk">8</span><span class="time">10:14</span><span>Project_Apollo.pdf copy deleted <span class="mono muted">B-008</span></span></li>
+        <li><span class="n usb">9</span><span class="time">10:18</span><span>USB removed <span class="mono muted">B-009</span></span></li>
+      </ol>
+    </div>
+  </div>
+  <p class="muted">Dataset totals: 15 records (13 events above plus 2 metadata records), joined into 8 correlations. All times are India Standard Time on 15 September 2026, in the demonstration data.</p>
+</section>
+
+<section id="hypotheses">
+  <span class="eyebrow">The result</span>
+  <h2>The four questions and their answers</h2>
+  <p>The project does not give a single "guilty / not guilty" answer. It asks four separate, careful questions, called hypotheses H1 to H4. Each answer comes with a confidence label and a limitation.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Question</th><th>Result</th><th>Confidence</th><th>In simple words</th><th>Limitation to mention</th></tr></thead>
+      <tbody>
+        <tr><td><strong>H1</strong> Was a USB drive used?</td><td><span class="pill p-ok">Supported</span></td><td>High</td><td>Several records show the USB being connected and removed.</td><td>Using a USB is normal. It happens in Experiment A too.</td></tr>
+        <tr><td><strong>H2</strong> Were the sensitive files accessed?</td><td><span class="pill p-ok">Supported</span></td><td>Medium</td><td>Shortcut and recent-document records show the fictional salary and customer files being opened.</td><td>Opening a file is not the same as copying it.</td></tr>
+        <tr><td><strong>H3</strong> Is there corroborated copying during the USB window?</td><td><span class="pill p-ok">Supported</span></td><td>High</td><td>USB, file access, the file on the USB, the ZIP and the login all agree within the same window.</td><td>Correlation shows timing and links, not intention.</td></tr>
+        <tr><td><strong>H4</strong> Is there hiding-like activity?</td><td><span class="pill p-warn">Partially supported</span></td><td>Medium</td><td>A ZIP was made and a file was deleted.</td><td>People zip and delete files for normal reasons too. Intent cannot be proved.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">Low, Medium and High are labels defined by this project. They are not probabilities and not an industry standard.</p>
+  <div class="callout">
+    <strong>The one-line conclusion to give</strong>
+    <p>"In this controlled dataset, several independent Windows artifacts together separate the simulated sensitive transfer from normal USB use much better than any single artifact, but real uncertainty and limits remain."</p>
+  </div>
+</section>
+
+<section id="score">
+  <span class="eyebrow">The result</span>
+  <h2>The experimental score: 13</h2>
+  <p>The score is a simple checklist that helps rank how much activity was found. Each rule that is met adds points. Experiment B meets all six rules.</p>
+  <div class="panel score">
+    <div class="score-row"><span>Matching file found on the USB</span><div class="bar"><span style="width:100%"></span></div><span class="pts">3</span></div>
+    <div class="score-row"><span>USB connection</span><div class="bar"><span style="width:66.7%"></span></div><span class="pts">2</span></div>
+    <div class="score-row"><span>Sensitive file accessed</span><div class="bar"><span style="width:66.7%"></span></div><span class="pts">2</span></div>
+    <div class="score-row"><span>Archive (ZIP) created</span><div class="bar"><span style="width:66.7%"></span></div><span class="pts">2</span></div>
+    <div class="score-row"><span>Sensitive file deleted</span><div class="bar"><span style="width:66.7%"></span></div><span class="pts">2</span></div>
+    <div class="score-row"><span>User session matches the time</span><div class="bar"><span style="width:66.7%"></span></div><span class="pts">2</span></div>
+    <div class="score-total"><span>Total</span><span class="mono">13</span></div>
+  </div>
+  <p class="muted">The weights live in <code>config/scoring.yaml</code>. Every report prints the warning that this score is an experimental model built for this project and is not a forensic standard or a probability.</p>
+</section>
+
+<section id="lab">
+  <span class="eyebrow">Real evidence</span>
+  <h2>Testing it on a real Windows PC</h2>
+  <p>The scenario dataset shows the method on a known story. To prove it also works on real evidence, the project includes a <strong>read-only collector</strong>: one PowerShell script that runs on any Windows PC as a normal user, changes nothing, and exports the real USB-related traces in the same format the analysis already reads. No virtual machine, no installation.</p>
+  <div class="figure">
+    <div class="scroll" role="img" aria-label="Collector flow: a real Windows PC is read by the collector into a JSON export with a SHA-256 manifest, which the same pipeline analyses">
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="d-head"/></marker>
+        </defs>
+        <rect x="20" y="40" width="150" height="110" rx="8" class="d-box"/>
+        <text x="95" y="70" text-anchor="middle" class="d-tb">Real Windows PC</text>
+        <text x="95" y="92" text-anchor="middle" class="d-s">USB device history</text>
+        <text x="95" y="108" text-anchor="middle" class="d-s">shortcuts, Recycle Bin</text>
+        <text x="95" y="124" text-anchor="middle" class="d-s">logons, USB files</text>
+        <path d="M172,95 L218,95" class="d-line" marker-end="url(#ah3)"/>
+        <text x="195" y="84" text-anchor="middle" class="d-s">read only</text>
+        <rect x="220" y="55" width="150" height="80" rx="8" class="d-box-key"/>
+        <text x="295" y="88" text-anchor="middle" class="d-tb">Collector</text>
+        <text x="295" y="108" text-anchor="middle" class="d-s">collect_usb_artifacts.ps1</text>
+        <path d="M372,95 L418,95" class="d-line" marker-end="url(#ah3)"/>
+        <rect x="420" y="55" width="130" height="80" rx="8" class="d-box"/>
+        <text x="485" y="88" text-anchor="middle" class="d-tb">JSON export</text>
+        <text x="485" y="108" text-anchor="middle" class="d-s">+ SHA-256 manifest</text>
+        <path d="M552,95 L588,95" class="d-line" marker-end="url(#ah3)"/>
+        <rect x="590" y="55" width="110" height="80" rx="8" class="d-box"/>
+        <text x="645" y="88" text-anchor="middle" class="d-tb">Same pipeline</text>
+        <text x="645" y="108" text-anchor="middle" class="d-s">H1 to H4</text>
+        <text x="20" y="182" class="d-s">The collector only reads. It never edits the PC, and the export is hashed so later changes would be detected.</text>
+      </svg>
+    </div>
+    <p class="caption">Figure 4. Real evidence path. Real Windows data flows into the same analysis as the scenarios.</p>
+  </div>
+  <h3>Both experiments, run for real</h3>
+  <p>On 21 October 2026 both scenarios were run on the project laptop with a real <strong>Seagate external USB hard disk</strong> (D:) and only fictional company files. Before each run the disk was unplugged and plugged back in, so Windows recorded a genuine "USB connected" event. The collector then gathered only that experiment's minutes.</p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Time</th><th>Real Windows trace</th><th>Experiment</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">21:02:07</td><td>Seagate external disk connected (device record)</td><td>A</td></tr>
+        <tr><td class="mono">21:03:08</td><td>Readme.txt opened (shortcut) and written to <code>D:\Backup</code></td><td>A</td></tr>
+        <tr><td class="mono">21:32:36</td><td>Seagate external disk connected again</td><td>B</td></tr>
+        <tr><td class="mono">21:32:57</td><td>Employee_Salaries.xlsx, Customer_Database.csv and Project_Apollo.pdf opened (shortcuts)</td><td>B</td></tr>
+        <tr><td class="mono">21:32:57</td><td>Salaries and customer files written to <code>D:\Backup</code></td><td>B</td></tr>
+        <tr><td class="mono">21:32:58</td><td>Project_Files.zip created on the USB disk</td><td>B</td></tr>
+        <tr><td class="mono">21:32:59</td><td>Temporary Project_Apollo.pdf copy moved to the Recycle Bin</td><td>B</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Evidence</th><th>H1</th><th>H2</th><th>H3</th><th>H4</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr><td>Designed scenario dataset</td><td><span class="pill p-ok">Supported</span></td><td><span class="pill p-ok">Supported</span></td><td><span class="pill p-ok">Supported</span></td><td><span class="pill p-warn">Partial</span></td><td class="mono">13</td></tr>
+        <tr><td><strong>Real run of A and B</strong></td><td><span class="pill p-ok">Supported</span></td><td><span class="pill p-ok">Supported</span></td><td><span class="pill p-ok">Supported</span> for B only</td><td><span class="pill p-warn">Partial</span></td><td class="mono">13</td></tr>
+        <tr><td>Same laptop, 30 days, no experiment</td><td><span class="pill p-ok">Supported</span></td><td><span class="pill p-info">Not supported</span></td><td><span class="pill p-info">Not supported</span></td><td><span class="pill p-warn">Partial</span></td><td class="mono">2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout">
+    <strong>Why this result matters</strong>
+    <p>On real Windows evidence the method gives the same verdict as the designed scenario: a high-confidence possible transfer for Experiment B and none for Experiment A. On the same laptop with no experiment, it detects ordinary USB use but does <em>not</em> claim a leak. Real data confirms the design, and the false-positive control holds.</p>
+  </div>
+</section>
+
+<section id="integrity">
+  <span class="eyebrow">Evidence safety</span>
+  <h2>Keeping the evidence trustworthy</h2>
+  <div class="two">
+    <div class="panel">
+      <h3>Hash = digital fingerprint</h3>
+      <p>A SHA-256 hash is a long code calculated from every byte of a file. Change even one byte and the code changes completely. We record the hash when the evidence is collected and check it again later. If they match, the evidence was not changed. A hash detects change. It is not encryption and does not hide anything.</p>
+    </div>
+    <div class="panel">
+      <h3>Chain of custody</h3>
+      <p>A log of who handled the evidence, when, and what they did, for example "Acquired and sealed". The project also keeps an audit log of what the investigator tool did. Analysis always uses verified copies, never the original image.</p>
+    </div>
+  </div>
+  <pre class="cmd">python acquisition\hash_evidence.py   &lt;image&gt; --evidence-id EVD-001
+python acquisition\manifest.py        custody.json --evidence-id EVD-001 --handler "Student Investigator" --action "Acquired and sealed"
+python acquisition\verify_evidence.py &lt;image&gt; --manifest EVD-001.json</pre>
+</section>
+
+<section id="explain">
+  <span class="eyebrow">For the viva</span>
+  <h2>How to explain the project to sir</h2>
+
+  <div class="panel">
+    <h3>If sir has only 30 seconds</h3>
+    <p>"I compare two controlled scenarios on the same Windows PC: a normal USB backup and a simulated copy of fictional sensitive files. My software reads the traces Windows leaves, joins them by time, user, device and file, and checks four questions. The key finding is that a USB alone proves nothing. It is several clues agreeing at the same time that makes the case strong. I then ran both scenarios for real on my laptop with an external USB disk, and the real evidence gave the same answer."</p>
+  </div>
+
+  <h3>The one-minute speech</h3>
+  <div class="speech">
+    <p>"Sir, my project studies how an insider could copy company data to a USB drive on Windows, and how a forensic investigator can detect it."</p>
+    <p>"I use only fictional company data. There are two scenarios on the same PC with the same user and USB drive. Experiment A is a normal backup. Experiment B copies fictional salary and customer files, makes a ZIP and deletes a file. I ran both for real on my laptop with an external USB disk, and a read-only script collected the real Windows traces."</p>
+    <p>"My application reads the Windows artifacts, keeps every original record, converts them to one common format, and joins related records by time, user, device and file. Then it answers four questions: was a USB used, were sensitive files opened, was there copying during the USB window, and was there any hiding-like activity."</p>
+    <p>"The important result is that USB use appears in both experiments, so it is weak evidence alone. The strong evidence is several independent clues agreeing in the same time window, especially the sensitive file appearing on the USB while the user was logged in. Every conclusion shows its source records and its limitations, and the score is only an experimental aid."</p>
+  </div>
+
+  <h3>Live demo, step by step</h3>
+  <p>Start the dashboard first (see the checklist below), then open <code>http://127.0.0.1:5000</code> and follow these steps. It takes about five minutes.</p>
+  <ol class="steps">
+    <li><span class="page">Overview</span><span>Point at the finding and the four numbers, then click through the stepper: Ingest, Normalize, Correlate, Assess, Report.</span><span class="say">"This is the research question. Here is every stage the evidence went through. The answer is built from many clues agreeing, not from one clue."</span></li>
+    <li><span class="page">Experiments</span><span>Show A and B side by side.</span><span class="say">"Both have USB activity. That's why USB alone can't prove copying. This is my false-positive control."</span></li>
+    <li><span class="page">Devices</span><span>Show the BACKUP_DRIVE records and the connection window.</span><span class="say">"This proves a device was connected. It doesn't prove anything was copied, and it says nothing about intent."</span></li>
+    <li><span class="page">Files</span><span>Find Employee_Salaries.xlsx and Customer_Database.csv.</span><span class="say">"Here the file is opened on the computer, and here the same file shows up on the USB. That destination record is the strongest clue."</span></li>
+    <li><span class="page">Timeline</span><span>Show the B events between 10:00 and 10:18.</span><span class="say">"All the file activity happens inside the time the USB was plugged in."</span></li>
+    <li><span class="page">Correlations</span><span>Open CORR-005 (Possible transfer session).</span><span class="say">"The engine is not a black box. Here are the exact record IDs it used and the reasons, in plain English."</span></li>
+    <li><span class="page">Hypotheses</span><span>Go through H1 to H4.</span><span class="say">"Each answer has a confidence and a limitation. For example, H4 is only partially supported because zipping and deleting can be innocent."</span></li>
+    <li><span class="page">Artifacts</span><span>Type "Salaries" in the search box, then click the B-005 row. The drawer opens with the normalized fields on top and the raw JSON below. Any blue artifact ID on any page opens the same drawer.</span><span class="say">"The original raw record is kept next to the normalized one, so nothing is lost or invented."</span></li>
+    <li><span class="page">Chain of custody</span><span>Show the evidence ID and its hash.</span><span class="say">"A hash is a fingerprint. If it matches later, the evidence has not changed. It's not encryption."</span></li>
+    <li><span class="page">Reports</span><span>Download the PDF report.</span><span class="say">"The same results are also in PDF, HTML and CSV, so the dashboard is not the only output."</span></li>
+    <li><span class="page">Real evidence</span><span>Stop the dashboard (Ctrl+C) and start it with <code>.\start_demo.ps1 -Dataset real</code>. The green "Real collected evidence" badge and the laptop's real name appear. Open Timeline.</span><span class="say">"These are the real Windows traces from running both experiments on my laptop with a USB disk. Same verdict: transfer for B, nothing for A."</span></li>
+  </ol>
+
+  <div class="dodont">
+    <div class="panel do">
+      <h3>Say this</h3>
+      <ul class="clean">
+        <li>"The evidence <em>supports</em> the hypothesis"</li>
+        <li>"Several independent clues agree"</li>
+        <li>"Consistent with copying during the USB window"</li>
+        <li>"This is a controlled lab with fictional data"</li>
+        <li>"Here is the limitation of this result"</li>
+      </ul>
+    </div>
+    <div class="panel dont">
+      <h3>Avoid saying</h3>
+      <ul class="clean">
+        <li>"This proves the employee is guilty"</li>
+        <li>"The USB record proves copying"</li>
+        <li>"The score is a probability"</li>
+        <li>"This can be used in court as it is"</li>
+        <li>"The company data is real" (the files are fictional; the Windows traces from the real run are real)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Checklist before you present</h3>
+  <p>Open PowerShell in the project folder and run:</p>
+  <pre class="cmd">cd "C:\Users\Gary\Desktop\CF proj"
+.\start_demo.ps1</pre>
+  <p>This checks the project, rebuilds the demo results and starts the dashboard at <code>http://127.0.0.1:5000</code>. Keep that window open while presenting and press <code>Ctrl+C</code> when you finish. To double-check everything first:</p>
+  <pre class="cmd">.\.venv\Scripts\python.exe -m pytest -q                  # expect: 14 passed
+.\.venv\Scripts\python.exe scripts\validate_project.py   # expect: every line PASS
+.\.venv\Scripts\python.exe scripts\run_pipeline.py --demo # expect: 15 artifacts, 8 correlations, score 13</pre>
+</section>
+
+<section id="viva">
+  <span class="eyebrow">For the viva</span>
+  <h2>Questions sir may ask, with simple answers</h2>
+  <div>
+    <details><summary>Where does your evidence come from?</summary><p>Two places. First, a controlled dataset of two scenarios with fictional data, so the right answer is known in advance. Second, a real run of both experiments on my own laptop with an external USB disk, collected by a read-only script. The real evidence gave the same verdict as the designed dataset.</p></details>
+    <details><summary>Why two experiments?</summary><p>Experiment A is the control. Without it, I couldn't show which clues are normal. Because USB use appears in both, I can show that USB alone is not proof.</p></details>
+    <details><summary>Does the USBSTOR Registry key prove the file was copied?</summary><p>No. It only shows that a device with that identity was connected at some point. It needs support from file, destination, time and user evidence.</p></details>
+    <details><summary>Does a timestamp prove copying?</summary><p>No. Windows timestamps mean different things (created, modified, accessed) and can change when files are copied, opened, or when the clock is wrong. Timestamps help with order, not proof.</p></details>
+    <details><summary>Why do you use many artifacts?</summary><p>Each one can be missing or unclear. When several independent ones agree, the conclusion is much more reliable. This is called corroboration.</p></details>
+    <details><summary>What is normalization?</summary><p>Converting records with different field names into one standard format, without guessing missing values. The original record is kept as well.</p></details>
+    <details><summary>What is correlation?</summary><p>Linking records that share a user, device, file or time window, using fixed rules. A correlation shows a relationship, not cause or intent.</p></details>
+    <details><summary>Isn't collecting from a running PC risky for evidence?</summary><p>Yes, any live collection touches the system a little. That is why the collector only reads, hashes its own output, and the project states this as a limitation. For formal casework you take a powered-off disk image instead and analyse a verified copy; the same pipeline reads exports from either.</p></details>
+    <details><summary>What is a hash and why do you need it?</summary><p>A digital fingerprint of the file. If the hash matches the recorded value later, the evidence has not changed since collection.</p></details>
+    <details><summary>Is the score of 13 a probability of guilt?</summary><p>No. It is a simple, visible checklist made for this project to help rank findings. It is clearly labelled as not a forensic standard.</p></details>
+    <details><summary>Can this be used in a real court?</summary><p>Not directly. Real cases need validated tools, legal authority and real-world variety. This project shows the method on controlled, fictional data.</p></details>
+    <details><summary>What are the main limitations?</summary><p>Fictional data, one controlled Windows setup, results depend on which artifacts were exported, timestamps can be unreliable, artifacts can be missing, there is no validated statistical model, and it never infers motive or guilt.</p></details>
+    <details><summary>What makes your project reproducible?</summary><p>Versioned code and settings, a fixed scenario dataset, a scripted read-only collector, evidence hashes, raw records kept, source IDs on every conclusion, fixed rules, 14 automated tests and generated reports.</p></details>
+    <details><summary>Why didn't you use a virtual machine?</summary><p>The analysis does not need one. It reads exported artifacts from any source. A VM would only be a way to create test evidence, and the scenario dataset plus the read-only collector already give a known-answer test and a real-world test without the extra setup.</p></details>
+    <details><summary>Is the demo data real?</summary><p>The two scenarios are a clearly labelled controlled dataset, so the correct answer is known in advance. The real run is genuine Windows evidence from my laptop: real USB connections, real shortcuts, real files on the USB disk and a real Recycle Bin record. Only the company files themselves are fictional.</p></details>
+  </div>
+</section>
+
+<section id="status">
+  <span class="eyebrow">Honest status</span>
+  <h2>Where the project stands today</h2>
+  <p class="muted">Updated 21 October 2026.</p>
+  <div class="status">
+    <div class="status-row"><span class="pill p-ok">Complete</span><span><strong>Application.</strong> All 14 automated tests pass and the project validator passes every check. The demo processes 15 artifacts into 8 correlations and 4 hypothesis results, and all report formats are generated.</span></div>
+    <div class="status-row"><span class="pill p-ok">Complete</span><span><strong>Dashboard.</strong> Rebuilt as a React app on shadcn/ui and ReUI components: a searchable artifact grid, an evidence drawer showing raw and normalized data side by side, per-experiment timelines, a clickable "how the conclusion was reached" stepper, and light and dark themes.</span></div>
+    <div class="status-row"><span class="pill p-ok">Complete</span><span><strong>Real experiments.</strong> Experiments A and B were run for real on the project laptop with an external USB disk. The real evidence gave the same verdict as the designed scenario: a high-confidence transfer for B, none for A. A 30-day check of the same laptop found USB use but correctly reported no leak.</span></div>
+    <div class="status-row"><span class="pill p-ok">Complete</span><span><strong>Reports and documentation.</strong> PDF, HTML, Markdown, JSON and CSV reports, the README, method, evidence-collection and viva guides, and this page.</span></div>
+    <div class="status-row"><span class="pill p-info">Further work</span><span><strong>Larger study.</strong> Repeat the real run on more PCs, Windows versions and USB devices, and add a disconnect step to capture removal records.</span></div>
+  </div>
+  <p>If sir asks, say it plainly: the method was designed on a controlled dataset where the answer is known, then confirmed with a real run of both experiments on a real laptop and a real USB disk, and it gives no false alarm on normal use.</p>
+</section>
+
+<section id="glossary">
+  <span class="eyebrow">Reference</span>
+  <h2>Glossary</h2>
+  <div class="panel">
+    <dl class="gloss">
+      <dt>Artifact</dt><dd>A trace or record Windows leaves behind, such as a Registry entry, shortcut or log line.</dd>
+      <dt>Insider exfiltration</dt><dd>Someone inside an organization taking data out without permission.</dd>
+      <dt>USBSTOR</dt><dd>The Registry area where Windows remembers USB storage devices that were connected.</dd>
+      <dt>LNK file</dt><dd>A Windows shortcut file. It is created automatically when a file is opened and shows that the file was used.</dd>
+      <dt>Jump List / Recent docs</dt><dd>Lists of recently opened files that Windows keeps for each program.</dd>
+      <dt>Prefetch</dt><dd>Files Windows uses to start programs faster. They show that a program was run, and when.</dd>
+      <dt>Shellbags</dt><dd>Registry records of which folders a user browsed in File Explorer.</dd>
+      <dt>Recycle Bin</dt><dd>Where deleted files go. It keeps a record of the file name and deletion time.</dd>
+      <dt>Event log</dt><dd>Windows' diary of system events, such as logons and device connections.</dd>
+      <dt>Live triage</dt><dd>Quickly collecting evidence from a running computer, read-only, instead of imaging the whole disk.</dd>
+      <dt>Disk image</dt><dd>An exact byte-for-byte copy of a disk, taken for examination.</dd>
+      <dt>SHA-256 hash</dt><dd>A digital fingerprint used to show a file has not changed.</dd>
+      <dt>Chain of custody</dt><dd>A record of who handled the evidence and what they did with it.</dd>
+      <dt>Normalization</dt><dd>Converting different record formats into one standard format.</dd>
+      <dt>Correlation</dt><dd>Linking related records by time, user, device or file.</dd>
+      <dt>Hypothesis</dt><dd>A careful question tested against the evidence (H1–H4).</dd>
+      <dt>Provenance</dt><dd>Where a piece of information came from, so it can be traced back.</dd>
+      <dt>Control experiment</dt><dd>The normal case (Experiment A) used for comparison.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="files">
+  <span class="eyebrow">Reference</span>
+  <h2>What is inside the project folder</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Folder</th><th>What it contains</th></tr></thead>
+      <tbody>
+        <tr><td><code>forensic/</code></td><td>The core engine: loading, normalizing, correlating, judging H1–H4, scoring, timeline, database and reports.</td></tr>
+        <tr><td><code>dashboard/</code></td><td>The Flask server and the built web dashboard: 11 pages, local only, read-only.</td></tr>
+        <tr><td><code>collector/</code></td><td>The read-only script that collects real USB evidence from any Windows PC.</td></tr>
+        <tr><td><code>simulator/</code></td><td>Scripts that define Experiments A and B and can reproduce them on a spare test PC.</td></tr>
+        <tr><td><code>acquisition/</code></td><td>Hashing, chain-of-custody and verification tools.</td></tr>
+        <tr><td><code>config/</code></td><td>Settings: case details, the 20-minute window, sensitive file names, score weights.</td></tr>
+        <tr><td><code>schemas/</code></td><td>Rules that check every artifact, finding and timeline entry has the right shape.</td></tr>
+        <tr><td><code>data/sample/</code></td><td>The synthetic demonstration records for A and B.</td></tr>
+        <tr><td><code>outputs/</code></td><td>Generated PDF, HTML, Markdown and JSON reports, plus CSV exports.</td></tr>
+        <tr><td><code>scripts/</code></td><td>Command-line tools: run the pipeline, validate the project, rebuild reports.</td></tr>
+        <tr><td><code>frontend/</code></td><td>Source of the React dashboard (shadcn/ui + ReUI). The built copy lives in <code>dashboard/static/app</code>.</td></tr>
+        <tr><td><code>tests/</code></td><td>14 automated tests.</td></tr>
+        <tr><td><code>docs/</code></td><td>Method, evidence collection, limitations, viva guide, this explainer and the handoff document.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  Educational digital-forensics project on a controlled scenario dataset, with an optional read-only real-PC test. All people, companies and files are fictional. Results are an analytical interpretation of the supplied artifacts, not a substitute for a validated forensic method in a real investigation. Source: <span class="mono">github.com/gauravgoodreads/windows-insider-usb-forensics</span>
+</footer>
+
+</div>

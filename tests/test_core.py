@@ -38,3 +38,16 @@ def test_empty_case():
 def test_reporting(tmp_path):
  a=artifacts(); c=correlate(a); h=evaluate_hypotheses(a,c,"employee01"); paths=generate_reports(tmp_path,project_config(),a,build_timeline(a),c,h,{"score":1}); text=Path(paths["markdown"]).read_text(); assert "Executive Summary" in text and "Limitations" in text and "No single artifact" in text
 
+def test_collector_and_launcher_exist():
+ assert (ROOT/"collector/collect_usb_artifacts.ps1").exists() and (ROOT/"start_demo.ps1").exists()
+
+def test_collector_output_ingests_and_skips_manifest(tmp_path):
+ from forensic.ingestion import ingest_path
+ live=[{"artifact_id":"META-LIVE","artifact_type":"simulation_metadata","experiment":"LIVE"},
+  {"artifact_id":"L-0001","timestamp":"2026-10-21T19:20:00+05:30","artifact_type":"usb","action":"connected","device":"SanDisk Ultra USB Device","path":"HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR\\Disk","experiment":"LIVE"},
+  {"artifact_id":"L-0002","timestamp":"2026-10-21T19:25:00+05:30","artifact_type":"filesystem","action":"created","device":"KINGSTON","path":"F:\\Reports\\Customer_Database.csv","experiment":"LIVE"}]
+ (tmp_path/"collected_LIVE.json").write_text(json.dumps(live),encoding="utf-8")
+ (tmp_path/"collected_LIVE-manifest.json").write_text(json.dumps({"sha256":"x","records":2}),encoding="utf-8")
+ a=normalize_records(ingest_path(tmp_path),project_config()); assert [x.artifact_id for x in a]==["META-LIVE","L-0001","L-0002"]
+ assert a[2].classification=="HIGHLY_SENSITIVE" and calculate_score(a,correlate(a),{"matching_destination_file":3})["observed"]["matching_destination_file"]
+

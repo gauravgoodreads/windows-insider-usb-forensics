@@ -13,6 +13,8 @@ def main() -> int:
   except Exception as e: checks.append((name,False,str(e))); print(f"[FAIL] {name}: {e}")
  check("Python version",lambda: (_ for _ in ()).throw(RuntimeError("Python 3.11+ required")) if sys.version_info<(3,11) else None)
  check("Configuration",lambda: project_config()["project"]["case_id"])
+ required_tools=[ROOT/"collector/collect_usb_artifacts.ps1",ROOT/"acquisition/hash_evidence.py",ROOT/"acquisition/verify_evidence.py",ROOT/"dashboard/static/app/index.html"]
+ check("Collector, acquisition and dashboard assets",lambda: (_ for _ in ()).throw(RuntimeError("missing: "+", ".join(str(p.relative_to(ROOT)) for p in required_tools if not p.exists()))) if not all(p.exists() for p in required_tools) else None)
  holder={}
  def demo():
   temp=Path(tempfile.mkdtemp(prefix="usb-forensics-validation-")); holder["r"]=run(ROOT/"data/sample",temp,temp/"case.db")
