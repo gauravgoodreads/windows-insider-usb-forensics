@@ -12,7 +12,9 @@ def normalize_records(records: list[dict[str, Any]], config: dict[str, Any]) -> 
         artifact_id = str(record.get("artifact_id") or f"ART-{index:04d}")
         if artifact_id in seen: continue
         seen.add(artifact_id)
-        filename = record.get("filename") or (str(record.get("path", "")).replace("\\", "/").rsplit("/", 1)[-1] or None)
+        path = str(record.get("path") or "")
+        # A file name is only derived from filesystem paths; Registry keys (device records) have no file.
+        filename = record.get("filename") or (None if path.upper().startswith(("HKLM", "HKEY")) else path.replace("\\", "/").rsplit("/", 1)[-1] or None)
         observed = [k for k, v in record.items() if v not in (None, "")]
         result.append(Artifact(
             artifact_id=artifact_id, case_id=str(record.get("case_id") or case_id),

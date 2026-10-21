@@ -32,7 +32,7 @@ The included demo hashes the synthetic export bundle for provenance. Real eviden
 
 - A-0001: user_session / logged_on / n/a (MEDIUM)
 
-- A-0002: usb / connected / 7&2EBF1D03&2&000000 (MEDIUM)
+- A-0002: usb / connected / Seagate Expansion SCSI Disk Device (MEDIUM)
 
 - A-0003: filesystem / created / Readme.txt (MEDIUM)
 
@@ -42,7 +42,7 @@ The included demo hashes the synthetic export bundle for provenance. Real eviden
 
 - B-0001: user_session / logged_on / n/a (MEDIUM)
 
-- B-0002: usb / connected / 7&2EBF1D03&2&000000 (MEDIUM)
+- B-0002: usb / connected / Seagate Expansion SCSI Disk Device (MEDIUM)
 
 - B-0003: filesystem / created / Employee_Salaries.xlsx (MEDIUM)
 
@@ -94,11 +94,11 @@ The included demo hashes the synthetic export bundle for provenance. Real eviden
 
 - CORR-001 USER_SESSION (MEDIUM): User-session artifact observed
 
-- CORR-002 USB_SESSION (MEDIUM): Removable-device connection artifact observed; Disconnect artifact included when available
+- CORR-002 USB_SESSION (MEDIUM): Removable-device connection artifact observed; No disconnect artifact; session end is unknown
 
 - CORR-003 USER_SESSION (MEDIUM): User-session artifact observed
 
-- CORR-004 USB_SESSION (MEDIUM): Removable-device connection artifact observed; Disconnect artifact included when available
+- CORR-004 USB_SESSION (MEDIUM): Removable-device connection artifact observed; No disconnect artifact; session end is unknown
 
 - CORR-005 POSSIBLE_TRANSFER_SESSION (HIGH): USB device activity observed; Sensitive-file activity occurred within the configured time window; Employee user-session artifact corroborates temporal association; Destination-side file artifact was observed on removable media; Archive activity occurred in the same experiment
 

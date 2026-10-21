@@ -1,10 +1,10 @@
 action,artifact,confidence,device,experiment,file,interpretation,source,timestamp,timestamp_type,type,user
 logged_on,A-0001,MEDIUM,,EXP-A,,Interactive user logon,System event log (Winlogon 7001),2026-10-21T20:47:29+05:30,logged_on,user_session,Gary
 logged_on,B-0001,MEDIUM,,EXP-B,,Interactive user logon,System event log (Winlogon 7001),2026-10-21T20:47:29+05:30,logged_on,user_session,Gary
-connected,A-0002,MEDIUM,Seagate Expansion SCSI Disk Device,EXP-A,7&2EBF1D03&2&000000,Last connection of USB storage device,PnP device properties (external USB disk),2026-10-21T21:02:07+05:30,connected,usb,Gary
+connected,A-0002,MEDIUM,Seagate Expansion SCSI Disk Device,EXP-A,,Last connection of USB storage device,PnP device properties (external USB disk),2026-10-21T21:02:07+05:30,connected,usb,Gary
 created,A-0003,MEDIUM,Gary,EXP-A,Readme.txt,Destination-side file on removable media,Removable volume listing (D:),2026-10-21T21:03:08+05:30,created,filesystem,Gary
 accessed,A-0004,MEDIUM,,EXP-A,Readme.txt,Shortcut created when the file was opened,Recent Items shortcut,2026-10-21T21:03:08+05:30,accessed,lnk,Gary
-connected,B-0002,MEDIUM,Seagate Expansion SCSI Disk Device,EXP-B,7&2EBF1D03&2&000000,Last connection of USB storage device,PnP device properties (external USB disk),2026-10-21T21:32:36+05:30,connected,usb,Gary
+connected,B-0002,MEDIUM,Seagate Expansion SCSI Disk Device,EXP-B,,Last connection of USB storage device,PnP device properties (external USB disk),2026-10-21T21:32:36+05:30,connected,usb,Gary
 created,B-0003,MEDIUM,Gary,EXP-B,Employee_Salaries.xlsx,Destination-side file on removable media,Removable volume listing (D:),2026-10-21T21:32:57+05:30,created,filesystem,Gary
 created,B-0004,MEDIUM,Gary,EXP-B,Customer_Database.csv,Destination-side file on removable media,Removable volume listing (D:),2026-10-21T21:32:57+05:30,created,filesystem,Gary
 accessed,B-0006,MEDIUM,,EXP-B,Employee_Salaries.xlsx,Shortcut created when the file was opened,Recent Items shortcut,2026-10-21T21:32:57+05:30,accessed,lnk,Gary

@@ -38,6 +38,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -74,6 +75,16 @@ const NAV: { group: string; items: NavItem[] }[] = [
   },
 ]
 
+/** On phones the sidebar is a slide-out sheet; close it once the chosen page has opened. */
+function CloseMobileSidebarOnNavigate() {
+  const { setOpenMobile } = useSidebar()
+  const { pathname } = useLocation()
+  useEffect(() => {
+    setOpenMobile(false)
+  }, [pathname, setOpenMobile])
+  return null
+}
+
 function useTheme() {
   const [dark, setDark] = useState(() => {
     try {
@@ -100,11 +111,15 @@ export function AppShell() {
   const [dark, toggleTheme] = useTheme()
   const { pathname } = useLocation()
 
-  useEffect(() => window.scrollTo(0, 0), [pathname])
+  // Block body on purpose: newer browsers return a Promise from scrollTo, and an effect must not return anything but a cleanup function.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   return (
     <TooltipProvider>
       <SidebarProvider>
+        <CloseMobileSidebarOnNavigate />
         <Sidebar collapsible="icon" variant="inset">
           <SidebarHeader>
             <div className="flex items-center gap-2.5 px-1.5 py-1">

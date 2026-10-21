@@ -11,7 +11,7 @@
       "filename": "real-run (artifact export bundle)",
       "sha256": "20f66c1aac9a4455333462f63d0baa17875c2c1269673e7337695766c978ef23",
       "size": 9300,
-      "recorded_at": "2026-10-21T16:03:38.084233+00:00",
+      "recorded_at": "2026-10-21T16:18:37.172409+00:00",
       "notes": "Imported artifact export bundle; original source files preserved and hashed for analysis provenance."
     }
   ],
@@ -120,7 +120,7 @@
       "host": "LAPTOP-MKT5QBHD",
       "user": "Gary",
       "path": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SCSI\\DISK&VEN_SEAGATE&PROD_EXPANSION\\7&2EBF1D03&2&000000",
-      "filename": "7&2EBF1D03&2&000000",
+      "filename": null,
       "action": "connected",
       "device": "Seagate Expansion SCSI Disk Device",
       "confidence": "MEDIUM",
@@ -374,7 +374,7 @@
       "host": "LAPTOP-MKT5QBHD",
       "user": "Gary",
       "path": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SCSI\\DISK&VEN_SEAGATE&PROD_EXPANSION\\7&2EBF1D03&2&000000",
-      "filename": "7&2EBF1D03&2&000000",
+      "filename": null,
       "action": "connected",
       "device": "Seagate Expansion SCSI Disk Device",
       "confidence": "MEDIUM",
@@ -841,7 +841,7 @@
       "type": "usb",
       "user": "Gary",
       "device": "Seagate Expansion SCSI Disk Device",
-      "file": "7&2EBF1D03&2&000000",
+      "file": null,
       "action": "connected",
       "timestamp_type": "connected",
       "interpretation": "Last connection of USB storage device",
@@ -883,7 +883,7 @@
       "type": "usb",
       "user": "Gary",
       "device": "Seagate Expansion SCSI Disk Device",
-      "file": "7&2EBF1D03&2&000000",
+      "file": null,
       "action": "connected",
       "timestamp_type": "connected",
       "interpretation": "Last connection of USB storage device",
@@ -1049,7 +1049,7 @@
       "confidence": "MEDIUM",
       "reasoning": [
         "Removable-device connection artifact observed",
-        "Disconnect artifact included when available"
+        "No disconnect artifact; session end is unknown"
       ],
       "experiment": "EXP-A"
     },
@@ -1084,7 +1084,7 @@
       "confidence": "MEDIUM",
       "reasoning": [
         "Removable-device connection artifact observed",
-        "Disconnect artifact included when available"
+        "No disconnect artifact; session end is unknown"
       ],
       "experiment": "EXP-B"
     },

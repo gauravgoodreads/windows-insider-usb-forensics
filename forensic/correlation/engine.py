@@ -23,7 +23,8 @@ def correlate(artifacts: list[Artifact], window_minutes: int = 20) -> list[Corre
             events.append(_event("USER_SESSION", number, sessions, ["User-session artifact observed"], "MEDIUM", experiment)); number += 1
         for connect in connects:
             close = [connect] + [d for d in disconnects if not connect.timestamp or not d.timestamp or d.timestamp >= connect.timestamp]
-            events.append(_event("USB_SESSION", number, close[:2], ["Removable-device connection artifact observed", "Disconnect artifact included when available"], "HIGH" if len(close)>1 else "MEDIUM", experiment)); number += 1
+            reasons = ["Removable-device connection artifact observed", "Disconnect artifact observed; session has a start and an end" if len(close)>1 else "No disconnect artifact; session end is unknown"]
+            events.append(_event("USB_SESSION", number, close[:2], reasons, "HIGH" if len(close)>1 else "MEDIUM", experiment)); number += 1
             if connect.timestamp:
                 nearby = [a for a in sensitive if a.timestamp and abs(a.timestamp-connect.timestamp) <= timedelta(minutes=window_minutes)]
             else: nearby = []

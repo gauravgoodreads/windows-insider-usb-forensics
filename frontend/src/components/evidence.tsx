@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useContext, useRef, useState, type ReactNode } from "react"
 import { ArrowRight, FileWarning } from "lucide-react"
 
 import { Badge } from "@/components/reui/badge"
@@ -31,13 +31,17 @@ export function EvidenceDrawerProvider({ children }: { children: ReactNode }) {
   const [selected, setSelected] = useState<string | null>(null)
   const index = useArtifactIndex()
   const artifact = selected ? index.get(selected) : undefined
+  // Focus the drawer's top on open; otherwise the dialog focuses the first focusable element
+  // (the raw-record code block at the bottom) and the panel opens scrolled to the end.
+  const topRef = useRef<HTMLDivElement>(null)
 
   return (
     <DrawerContext.Provider value={setSelected}>
       {children}
       <Sheet open={!!artifact} onOpenChange={(open) => !open && setSelected(null)}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
-          {artifact && <ArtifactDetail artifact={artifact} />}
+        <SheetContent className="w-full overflow-y-auto sm:max-w-xl" initialFocus={topRef}>
+          <div ref={topRef} tabIndex={-1} className="outline-none" aria-hidden />
+          {artifact && <ArtifactDetail key={artifact.artifact_id} artifact={artifact} />}
         </SheetContent>
       </Sheet>
     </DrawerContext.Provider>

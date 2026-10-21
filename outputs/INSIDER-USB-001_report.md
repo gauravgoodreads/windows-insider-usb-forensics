@@ -42,7 +42,7 @@ The included demo hashes the synthetic export bundle for provenance. Real eviden
 
 - B-001: user_session / logged_on / n/a (MEDIUM)
 
-- B-002: usb / connected / USBSTOR (MEDIUM)
+- B-002: usb / connected / BACKUP_DRIVE (MEDIUM)
 
 - B-003: lnk / accessed / Employee_Salaries.xlsx (MEDIUM)
 
@@ -94,11 +94,11 @@ The included demo hashes the synthetic export bundle for provenance. Real eviden
 
 - CORR-001 USER_SESSION (MEDIUM): User-session artifact observed
 
-- CORR-002 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact included when available
+- CORR-002 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact observed; session has a start and an end
 
 - CORR-003 USER_SESSION (MEDIUM): User-session artifact observed
 
-- CORR-004 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact included when available
+- CORR-004 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact observed; session has a start and an end
 
 - CORR-005 POSSIBLE_TRANSFER_SESSION (HIGH): USB device activity observed; Sensitive-file activity occurred within the configured time window; Employee user-session artifact corroborates temporal association; Destination-side file artifact was observed on removable media; Archive activity occurred in the same experiment
 
