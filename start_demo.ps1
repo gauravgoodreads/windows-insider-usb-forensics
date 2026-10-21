@@ -11,6 +11,12 @@ if (!(Test-Path -LiteralPath $python)) {
     throw 'Virtual environment not found. Follow the Install and demonstrate section in README.md first.'
 }
 
+# Windows lets a second server share a busy port, so the browser would keep reaching the old one. Refuse instead.
+$busy = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($busy) {
+    throw "Port $Port is already used by another dashboard (process $($busy.OwningProcess)). Close that PowerShell window or press Ctrl+C in it, then run this again, or add -Port 5050."
+}
+
 Push-Location $PSScriptRoot
 try {
     & $python 'scripts\validate_project.py'
