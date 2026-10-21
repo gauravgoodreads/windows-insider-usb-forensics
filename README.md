@@ -31,6 +31,8 @@ python dashboard/app.py
 
 Open `http://127.0.0.1:5000`. Core analysis has no cloud, telemetry, secrets, or external-service dependency. Use `python scripts/run_pipeline.py --input C:\path\to\read-only-exports` for JSON/CSV exports.
 
+To perform the whole investigation live in front of an examiner, run `.\live_demo.ps1` with a USB drive plugged in. It walks through 8 narrated steps: fictional files, Experiment A, evidence collection, Experiment B, collection, analysis, cleanup, and the dashboard on the evidence just collected. It pauses for Enter and asks you to replug the drive twice.
+
 After the first installation, the easiest classroom launch is `./start_demo.ps1`. It validates the project, regenerates the demo analysis, and starts the local-only dashboard. Keep that PowerShell window open and press `Ctrl+C` once after the presentation.
 
 The dashboard frontend lives in `frontend/` and is prebuilt into `dashboard/static/app`, so presenting needs only Python. Flask serves it on every page URL and reads all data from `/api/dashboard`. To change the frontend, install Node.js 20+ and run:

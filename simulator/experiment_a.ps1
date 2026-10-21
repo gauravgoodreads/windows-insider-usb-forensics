@@ -6,4 +6,4 @@ Add-Type -Namespace Lab -Name Shell -MemberDefinition '[DllImport("shell32.dll",
 New-Item -ItemType Directory -Force $LogDir | Out-Null; $log=Join-Path $LogDir 'EXP-A-intended-actions.log'; "SIMULATION METADATA, NOT FORENSIC EVIDENCE`nExperiment A started: $(Get-Date -Format o)" | Set-Content $log
 $readme=Join-Path $CompanyRoot 'Public\Readme.txt'; $destination=Join-Path $UsbRoot 'Backup'; New-Item -ItemType Directory -Force $destination | Out-Null
 Get-Content $readme | Out-Null; [Lab.Shell]::SHAddToRecentDocs(3,$readme); Copy-Item $readme $destination
-"Normal fictional file opened and copied; session finished: $(Get-Date -Format o)" | Add-Content $log
+"Normal fictional file opened and copied, session finished: $(Get-Date -Format o)" | Add-Content $log

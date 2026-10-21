@@ -100,7 +100,9 @@ $removable = @($removable | Sort-Object DeviceID -Unique)
 foreach ($vol in $removable) {
     $volumeLabel = if ($vol.VolumeName) { $vol.VolumeName.Trim() } else { $vol.DeviceID }
     # Large external disks are scanned to a bounded depth so collection stays fast.
+    # Windows system folders on the volume (its own Recycle Bin, restore data) are not user files.
     $files = @(Get-ChildItem -LiteralPath "$($vol.DeviceID)\" -Recurse -Depth $MaxDepth -File -Force -ErrorAction SilentlyContinue |
+        Where-Object { $_.FullName -notmatch '\\(\$RECYCLE\.BIN|System Volume Information)\\' } |
         Where-Object { $_.CreationTime -ge $since -or $_.LastWriteTime -ge $since } |
         Sort-Object CreationTime | Select-Object -First $MaxFilesPerVolume)
     foreach ($f in $files) {

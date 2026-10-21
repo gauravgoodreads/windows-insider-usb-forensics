@@ -9,3 +9,5 @@ lab/runtime/
 *.vhd
 *.vhdx
 frontend/node_modules/
+evidence/live-*/
+outputs/live-*/
