@@ -23,10 +23,10 @@ def describe_evidence_bundle(input_path: str | Path) -> dict:
     recorded_at="2026-09-15T08:55:00+05:30" if is_demo else datetime.now(timezone.utc).isoformat()
     return {"evidence_id":"EVD-DEMO-001" if is_demo else "EVD-EXPORT-001","filename":target.name+" (artifact export bundle)","sha256":digest.hexdigest(),"size":size,"recorded_at":recorded_at,"notes":("Synthetic demonstration export bundle; not an acquired disk image and not real case evidence." if is_demo else "Imported artifact export bundle; original source files preserved and hashed for analysis provenance.")}
 
-def run(input_path: str | Path, output_dir: str | Path = ROOT/"outputs", db_path: str | Path = ROOT/"data"/"cases"/"insider_usb.db") -> dict:
+def run(input_path: str | Path, output_dir: str | Path = ROOT/"outputs", db_path: str | Path = ROOT/"data"/"cases"/"insider_usb.db", username: str | None = None) -> dict:
     config=project_config(); evidence=describe_evidence_bundle(input_path); raw=ingest_path(input_path); artifacts=normalize_records(raw,config)
     correlations=correlate(artifacts,int(config["analysis"]["correlation_window_minutes"])); timeline=build_timeline(artifacts)
-    hypotheses=evaluate_hypotheses(artifacts,correlations,config["victim"]["username"])
+    hypotheses=evaluate_hypotheses(artifacts,correlations,username or config["victim"]["username"])
     rules=load_yaml(ROOT/"config"/"scoring.yaml")["rules"]; score=calculate_score(artifacts,correlations,rules)
     with connect(db_path) as db: populate(db,config,artifacts,correlations,hypotheses,evidence)
     reports=generate_reports(output_dir,config,artifacts,timeline,correlations,hypotheses,score,evidence)

@@ -25,6 +25,7 @@ def ingest_path(path: str | Path) -> list[dict[str, Any]]:
     target = Path(path).resolve()
     if not target.exists(): raise IngestionError(f"Input does not exist: {target}")
     files = sorted(target.glob("*.json")) + sorted(target.glob("*.csv")) if target.is_dir() else [target]
+    files = [f for f in files if not f.name.lower().endswith("manifest.json")]  # integrity manifests describe evidence, they are not evidence
     records: list[dict[str, Any]] = []
     for file in files:
         if file.suffix.lower() == ".json": records.extend(load_json(file))

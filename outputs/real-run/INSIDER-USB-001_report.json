@@ -1,0 +1,1294 @@
+{
+  "case": {
+    "name": "USB Insider Forensics: Detecting Data Exfiltration via Removable Media on Windows",
+    "case_id": "INSIDER-USB-001",
+    "investigator": "Student Investigator",
+    "timezone": "Asia/Kolkata"
+  },
+  "evidence_inventory": [
+    {
+      "evidence_id": "EVD-EXPORT-001",
+      "filename": "real-run (artifact export bundle)",
+      "sha256": "20f66c1aac9a4455333462f63d0baa17875c2c1269673e7337695766c978ef23",
+      "size": 9300,
+      "recorded_at": "2026-10-21T16:18:37.172409+00:00",
+      "notes": "Imported artifact export bundle; original source files preserved and hashed for analysis provenance."
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "META-EXP-A",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": null,
+      "timestamp_type": "artifact_generated",
+      "artifact_type": "simulation_metadata",
+      "source": "collector metadata",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": null,
+      "filename": null,
+      "action": null,
+      "device": null,
+      "confidence": "LOW",
+      "description": "",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "artifact_type",
+        "experiment",
+        "host",
+        "user",
+        "source",
+        "confidence",
+        "collected_at",
+        "since",
+        "collector",
+        "notes"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "META-EXP-A",
+        "artifact_type": "simulation_metadata",
+        "experiment": "EXP-A",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "source": "collector metadata",
+        "confidence": "LOW",
+        "collected_at": "2026-10-21T21:03:32+05:30",
+        "since": "2026-10-21T21:00:04+05:30",
+        "collector": "collect_usb_artifacts.ps1",
+        "notes": "COLLECTION METADATA - describes how the evidence was gathered, not evidence itself"
+      },
+      "derived_from": [
+        "META-EXP-A"
+      ]
+    },
+    {
+      "artifact_id": "A-0001",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T20:47:29+05:30",
+      "timestamp_type": "logged_on",
+      "artifact_type": "user_session",
+      "source": "System event log (Winlogon 7001)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": null,
+      "filename": null,
+      "action": "logged_on",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Interactive user logon",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "action",
+        "description",
+        "source",
+        "timestamp",
+        "artifact_type",
+        "timestamp_type"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-0001",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-A",
+        "action": "logged_on",
+        "description": "Interactive user logon",
+        "source": "System event log (Winlogon 7001)",
+        "timestamp": "2026-10-21T20:47:29+05:30",
+        "artifact_type": "user_session",
+        "timestamp_type": "logged_on"
+      },
+      "derived_from": [
+        "A-0001"
+      ]
+    },
+    {
+      "artifact_id": "A-0002",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:02:07+05:30",
+      "timestamp_type": "connected",
+      "artifact_type": "usb",
+      "source": "PnP device properties (external USB disk)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SCSI\\DISK&VEN_SEAGATE&PROD_EXPANSION\\7&2EBF1D03&2&000000",
+      "filename": null,
+      "action": "connected",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "confidence": "MEDIUM",
+      "description": "Last connection of USB storage device",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "source",
+        "artifact_type",
+        "path",
+        "device",
+        "timestamp_type",
+        "description",
+        "timestamp",
+        "serial_number",
+        "action"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-0002",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-A",
+        "source": "PnP device properties (external USB disk)",
+        "artifact_type": "usb",
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SCSI\\DISK&VEN_SEAGATE&PROD_EXPANSION\\7&2EBF1D03&2&000000",
+        "device": "Seagate Expansion SCSI Disk Device",
+        "timestamp_type": "connected",
+        "description": "Last connection of USB storage device",
+        "timestamp": "2026-10-21T21:02:07+05:30",
+        "serial_number": "7&2EBF1D03&2",
+        "action": "connected"
+      },
+      "derived_from": [
+        "A-0002"
+      ]
+    },
+    {
+      "artifact_id": "A-0003",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:03:08+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "filesystem",
+      "source": "Removable volume listing (D:)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "D:\\Backup\\Readme.txt",
+      "filename": "Readme.txt",
+      "action": "created",
+      "device": "Gary",
+      "confidence": "MEDIUM",
+      "description": "Destination-side file on removable media",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "size",
+        "description",
+        "timestamp",
+        "modified",
+        "device",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-0003",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-A",
+        "timestamp_type": "created",
+        "artifact_type": "filesystem",
+        "source": "Removable volume listing (D:)",
+        "filename": "Readme.txt",
+        "size": 47,
+        "description": "Destination-side file on removable media",
+        "timestamp": "2026-10-21T21:03:08+05:30",
+        "modified": "2026-10-21T20:56:01+05:30",
+        "device": "Gary",
+        "path": "D:\\Backup\\Readme.txt",
+        "action": "created"
+      },
+      "derived_from": [
+        "A-0003"
+      ]
+    },
+    {
+      "artifact_id": "A-0004",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:03:08+05:30",
+      "timestamp_type": "accessed",
+      "artifact_type": "lnk",
+      "source": "Recent Items shortcut",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "C:\\CompanyData\\Public\\Readme.txt",
+      "filename": "Readme.txt",
+      "action": "accessed",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Shortcut created when the file was opened",
+      "experiment": "EXP-A",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "lnk_file",
+        "description",
+        "timestamp",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "A-0004",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-A",
+        "timestamp_type": "accessed",
+        "artifact_type": "lnk",
+        "source": "Recent Items shortcut",
+        "filename": "Readme.txt",
+        "lnk_file": "Readme (3).lnk",
+        "description": "Shortcut created when the file was opened",
+        "timestamp": "2026-10-21T21:03:08+05:30",
+        "path": "C:\\CompanyData\\Public\\Readme.txt",
+        "action": "accessed"
+      },
+      "derived_from": [
+        "A-0004"
+      ]
+    },
+    {
+      "artifact_id": "META-EXP-B",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": null,
+      "timestamp_type": "artifact_generated",
+      "artifact_type": "simulation_metadata",
+      "source": "collector metadata",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": null,
+      "filename": null,
+      "action": null,
+      "device": null,
+      "confidence": "LOW",
+      "description": "",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "artifact_type",
+        "experiment",
+        "host",
+        "user",
+        "source",
+        "confidence",
+        "collected_at",
+        "since",
+        "collector",
+        "notes"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "META-EXP-B",
+        "artifact_type": "simulation_metadata",
+        "experiment": "EXP-B",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "source": "collector metadata",
+        "confidence": "LOW",
+        "collected_at": "2026-10-21T21:33:25+05:30",
+        "since": "2026-10-21T21:03:43+05:30",
+        "collector": "collect_usb_artifacts.ps1",
+        "notes": "COLLECTION METADATA - describes how the evidence was gathered, not evidence itself"
+      },
+      "derived_from": [
+        "META-EXP-B"
+      ]
+    },
+    {
+      "artifact_id": "B-0001",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T20:47:29+05:30",
+      "timestamp_type": "logged_on",
+      "artifact_type": "user_session",
+      "source": "System event log (Winlogon 7001)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": null,
+      "filename": null,
+      "action": "logged_on",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Interactive user logon",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "action",
+        "description",
+        "source",
+        "timestamp",
+        "artifact_type",
+        "timestamp_type"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-0001",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "action": "logged_on",
+        "description": "Interactive user logon",
+        "source": "System event log (Winlogon 7001)",
+        "timestamp": "2026-10-21T20:47:29+05:30",
+        "artifact_type": "user_session",
+        "timestamp_type": "logged_on"
+      },
+      "derived_from": [
+        "B-0001"
+      ]
+    },
+    {
+      "artifact_id": "B-0002",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:36+05:30",
+      "timestamp_type": "connected",
+      "artifact_type": "usb",
+      "source": "PnP device properties (external USB disk)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SCSI\\DISK&VEN_SEAGATE&PROD_EXPANSION\\7&2EBF1D03&2&000000",
+      "filename": null,
+      "action": "connected",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "confidence": "MEDIUM",
+      "description": "Last connection of USB storage device",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "source",
+        "artifact_type",
+        "path",
+        "device",
+        "timestamp_type",
+        "description",
+        "timestamp",
+        "serial_number",
+        "action"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-0002",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "source": "PnP device properties (external USB disk)",
+        "artifact_type": "usb",
+        "path": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\SCSI\\DISK&VEN_SEAGATE&PROD_EXPANSION\\7&2EBF1D03&2&000000",
+        "device": "Seagate Expansion SCSI Disk Device",
+        "timestamp_type": "connected",
+        "description": "Last connection of USB storage device",
+        "timestamp": "2026-10-21T21:32:36+05:30",
+        "serial_number": "7&2EBF1D03&2",
+        "action": "connected"
+      },
+      "derived_from": [
+        "B-0002"
+      ]
+    },
+    {
+      "artifact_id": "B-0003",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "filesystem",
+      "source": "Removable volume listing (D:)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "D:\\Backup\\Employee_Salaries.xlsx",
+      "filename": "Employee_Salaries.xlsx",
+      "action": "created",
+      "device": "Gary",
+      "confidence": "MEDIUM",
+      "description": "Destination-side file on removable media",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "size",
+        "description",
+        "timestamp",
+        "modified",
+        "device",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-0003",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "created",
+        "artifact_type": "filesystem",
+        "source": "Removable volume listing (D:)",
+        "filename": "Employee_Salaries.xlsx",
+        "size": 1738,
+        "description": "Destination-side file on removable media",
+        "timestamp": "2026-10-21T21:32:57+05:30",
+        "modified": "2026-10-21T20:56:01+05:30",
+        "device": "Gary",
+        "path": "D:\\Backup\\Employee_Salaries.xlsx",
+        "action": "created"
+      },
+      "derived_from": [
+        "B-0003"
+      ]
+    },
+    {
+      "artifact_id": "B-0004",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "filesystem",
+      "source": "Removable volume listing (D:)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "D:\\Backup\\Customer_Database.csv",
+      "filename": "Customer_Database.csv",
+      "action": "created",
+      "device": "Gary",
+      "confidence": "MEDIUM",
+      "description": "Destination-side file on removable media",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "size",
+        "description",
+        "timestamp",
+        "modified",
+        "device",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-0004",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "created",
+        "artifact_type": "filesystem",
+        "source": "Removable volume listing (D:)",
+        "filename": "Customer_Database.csv",
+        "size": 113,
+        "description": "Destination-side file on removable media",
+        "timestamp": "2026-10-21T21:32:57+05:30",
+        "modified": "2026-10-21T20:56:01+05:30",
+        "device": "Gary",
+        "path": "D:\\Backup\\Customer_Database.csv",
+        "action": "created"
+      },
+      "derived_from": [
+        "B-0004"
+      ]
+    },
+    {
+      "artifact_id": "B-0005",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:58+05:30",
+      "timestamp_type": "created",
+      "artifact_type": "archive",
+      "source": "Removable volume listing (D:)",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "D:\\Backup\\Project_Files.zip",
+      "filename": "Project_Files.zip",
+      "action": "archived",
+      "device": "Gary",
+      "confidence": "MEDIUM",
+      "description": "Archive present on removable media",
+      "experiment": "EXP-B",
+      "classification": "NORMAL",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "size",
+        "description",
+        "timestamp",
+        "modified",
+        "device",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [],
+      "raw": {
+        "artifact_id": "B-0005",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "created",
+        "artifact_type": "archive",
+        "source": "Removable volume listing (D:)",
+        "filename": "Project_Files.zip",
+        "size": 1789,
+        "description": "Archive present on removable media",
+        "timestamp": "2026-10-21T21:32:58+05:30",
+        "modified": "2026-10-21T21:32:58+05:30",
+        "device": "Gary",
+        "path": "D:\\Backup\\Project_Files.zip",
+        "action": "archived"
+      },
+      "derived_from": [
+        "B-0005"
+      ]
+    },
+    {
+      "artifact_id": "B-0006",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "timestamp_type": "accessed",
+      "artifact_type": "lnk",
+      "source": "Recent Items shortcut",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "C:\\CompanyData\\Finance\\Employee_Salaries.xlsx",
+      "filename": "Employee_Salaries.xlsx",
+      "action": "accessed",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Shortcut created when the file was opened",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "lnk_file",
+        "description",
+        "timestamp",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-0006",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "accessed",
+        "artifact_type": "lnk",
+        "source": "Recent Items shortcut",
+        "filename": "Employee_Salaries.xlsx",
+        "lnk_file": "Employee_Salaries.lnk",
+        "description": "Shortcut created when the file was opened",
+        "timestamp": "2026-10-21T21:32:57+05:30",
+        "path": "C:\\CompanyData\\Finance\\Employee_Salaries.xlsx",
+        "action": "accessed"
+      },
+      "derived_from": [
+        "B-0006"
+      ]
+    },
+    {
+      "artifact_id": "B-0007",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "timestamp_type": "accessed",
+      "artifact_type": "lnk",
+      "source": "Recent Items shortcut",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "C:\\CompanyData\\Customers\\Customer_Database.csv",
+      "filename": "Customer_Database.csv",
+      "action": "accessed",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Shortcut created when the file was opened",
+      "experiment": "EXP-B",
+      "classification": "HIGHLY_SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "lnk_file",
+        "description",
+        "timestamp",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-0007",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "accessed",
+        "artifact_type": "lnk",
+        "source": "Recent Items shortcut",
+        "filename": "Customer_Database.csv",
+        "lnk_file": "Customer_Database.lnk",
+        "description": "Shortcut created when the file was opened",
+        "timestamp": "2026-10-21T21:32:57+05:30",
+        "path": "C:\\CompanyData\\Customers\\Customer_Database.csv",
+        "action": "accessed"
+      },
+      "derived_from": [
+        "B-0007"
+      ]
+    },
+    {
+      "artifact_id": "B-0008",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "timestamp_type": "accessed",
+      "artifact_type": "lnk",
+      "source": "Recent Items shortcut",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "C:\\CompanyData\\Projects\\Project_Apollo.pdf",
+      "filename": "Project_Apollo.pdf",
+      "action": "accessed",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "Shortcut created when the file was opened",
+      "experiment": "EXP-B",
+      "classification": "SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "lnk_file",
+        "description",
+        "timestamp",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-0008",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "accessed",
+        "artifact_type": "lnk",
+        "source": "Recent Items shortcut",
+        "filename": "Project_Apollo.pdf",
+        "lnk_file": "Project_Apollo.lnk",
+        "description": "Shortcut created when the file was opened",
+        "timestamp": "2026-10-21T21:32:57+05:30",
+        "path": "C:\\CompanyData\\Projects\\Project_Apollo.pdf",
+        "action": "accessed"
+      },
+      "derived_from": [
+        "B-0008"
+      ]
+    },
+    {
+      "artifact_id": "B-0009",
+      "case_id": "INSIDER-USB-001",
+      "timestamp": "2026-10-21T21:32:59+05:30",
+      "timestamp_type": "deleted",
+      "artifact_type": "recycle_bin",
+      "source": "Recycle Bin $I record",
+      "host": "LAPTOP-MKT5QBHD",
+      "user": "Gary",
+      "path": "C:\\Users\\Gary\\AppData\\Local\\Temp\\apollo-lab-temp\\Project_Apollo.pdf",
+      "filename": "Project_Apollo.pdf",
+      "action": "deleted",
+      "device": null,
+      "confidence": "MEDIUM",
+      "description": "File moved to the Recycle Bin",
+      "experiment": "EXP-B",
+      "classification": "SENSITIVE",
+      "observed_fields": [
+        "artifact_id",
+        "host",
+        "user",
+        "experiment",
+        "timestamp_type",
+        "artifact_type",
+        "source",
+        "filename",
+        "size",
+        "description",
+        "timestamp",
+        "path",
+        "action"
+      ],
+      "inferred_fields": [
+        "classification"
+      ],
+      "raw": {
+        "artifact_id": "B-0009",
+        "host": "LAPTOP-MKT5QBHD",
+        "user": "Gary",
+        "experiment": "EXP-B",
+        "timestamp_type": "deleted",
+        "artifact_type": "recycle_bin",
+        "source": "Recycle Bin $I record",
+        "filename": "Project_Apollo.pdf",
+        "size": 719,
+        "description": "File moved to the Recycle Bin",
+        "timestamp": "2026-10-21T21:32:59+05:30",
+        "path": "C:\\Users\\Gary\\AppData\\Local\\Temp\\apollo-lab-temp\\Project_Apollo.pdf",
+        "action": "deleted"
+      },
+      "derived_from": [
+        "B-0009"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "timestamp": "2026-10-21T20:47:29+05:30",
+      "artifact": "A-0001",
+      "source": "System event log (Winlogon 7001)",
+      "type": "user_session",
+      "user": "Gary",
+      "device": null,
+      "file": null,
+      "action": "logged_on",
+      "timestamp_type": "logged_on",
+      "interpretation": "Interactive user logon",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-10-21T20:47:29+05:30",
+      "artifact": "B-0001",
+      "source": "System event log (Winlogon 7001)",
+      "type": "user_session",
+      "user": "Gary",
+      "device": null,
+      "file": null,
+      "action": "logged_on",
+      "timestamp_type": "logged_on",
+      "interpretation": "Interactive user logon",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:02:07+05:30",
+      "artifact": "A-0002",
+      "source": "PnP device properties (external USB disk)",
+      "type": "usb",
+      "user": "Gary",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "file": null,
+      "action": "connected",
+      "timestamp_type": "connected",
+      "interpretation": "Last connection of USB storage device",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-10-21T21:03:08+05:30",
+      "artifact": "A-0003",
+      "source": "Removable volume listing (D:)",
+      "type": "filesystem",
+      "user": "Gary",
+      "device": "Gary",
+      "file": "Readme.txt",
+      "action": "created",
+      "timestamp_type": "created",
+      "interpretation": "Destination-side file on removable media",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-10-21T21:03:08+05:30",
+      "artifact": "A-0004",
+      "source": "Recent Items shortcut",
+      "type": "lnk",
+      "user": "Gary",
+      "device": null,
+      "file": "Readme.txt",
+      "action": "accessed",
+      "timestamp_type": "accessed",
+      "interpretation": "Shortcut created when the file was opened",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:36+05:30",
+      "artifact": "B-0002",
+      "source": "PnP device properties (external USB disk)",
+      "type": "usb",
+      "user": "Gary",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "file": null,
+      "action": "connected",
+      "timestamp_type": "connected",
+      "interpretation": "Last connection of USB storage device",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "artifact": "B-0003",
+      "source": "Removable volume listing (D:)",
+      "type": "filesystem",
+      "user": "Gary",
+      "device": "Gary",
+      "file": "Employee_Salaries.xlsx",
+      "action": "created",
+      "timestamp_type": "created",
+      "interpretation": "Destination-side file on removable media",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "artifact": "B-0004",
+      "source": "Removable volume listing (D:)",
+      "type": "filesystem",
+      "user": "Gary",
+      "device": "Gary",
+      "file": "Customer_Database.csv",
+      "action": "created",
+      "timestamp_type": "created",
+      "interpretation": "Destination-side file on removable media",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "artifact": "B-0006",
+      "source": "Recent Items shortcut",
+      "type": "lnk",
+      "user": "Gary",
+      "device": null,
+      "file": "Employee_Salaries.xlsx",
+      "action": "accessed",
+      "timestamp_type": "accessed",
+      "interpretation": "Shortcut created when the file was opened",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "artifact": "B-0007",
+      "source": "Recent Items shortcut",
+      "type": "lnk",
+      "user": "Gary",
+      "device": null,
+      "file": "Customer_Database.csv",
+      "action": "accessed",
+      "timestamp_type": "accessed",
+      "interpretation": "Shortcut created when the file was opened",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:57+05:30",
+      "artifact": "B-0008",
+      "source": "Recent Items shortcut",
+      "type": "lnk",
+      "user": "Gary",
+      "device": null,
+      "file": "Project_Apollo.pdf",
+      "action": "accessed",
+      "timestamp_type": "accessed",
+      "interpretation": "Shortcut created when the file was opened",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:58+05:30",
+      "artifact": "B-0005",
+      "source": "Removable volume listing (D:)",
+      "type": "archive",
+      "user": "Gary",
+      "device": "Gary",
+      "file": "Project_Files.zip",
+      "action": "archived",
+      "timestamp_type": "created",
+      "interpretation": "Archive present on removable media",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": "2026-10-21T21:32:59+05:30",
+      "artifact": "B-0009",
+      "source": "Recycle Bin $I record",
+      "type": "recycle_bin",
+      "user": "Gary",
+      "device": null,
+      "file": "Project_Apollo.pdf",
+      "action": "deleted",
+      "timestamp_type": "deleted",
+      "interpretation": "File moved to the Recycle Bin",
+      "confidence": "MEDIUM",
+      "experiment": "EXP-B"
+    },
+    {
+      "timestamp": null,
+      "artifact": "META-EXP-A",
+      "source": "collector metadata",
+      "type": "simulation_metadata",
+      "user": "Gary",
+      "device": null,
+      "file": null,
+      "action": null,
+      "timestamp_type": "artifact_generated",
+      "interpretation": "",
+      "confidence": "LOW",
+      "experiment": "EXP-A"
+    },
+    {
+      "timestamp": null,
+      "artifact": "META-EXP-B",
+      "source": "collector metadata",
+      "type": "simulation_metadata",
+      "user": "Gary",
+      "device": null,
+      "file": null,
+      "action": null,
+      "timestamp_type": "artifact_generated",
+      "interpretation": "",
+      "confidence": "LOW",
+      "experiment": "EXP-B"
+    }
+  ],
+  "correlations": [
+    {
+      "event_id": "CORR-001",
+      "type": "USER_SESSION",
+      "start_time": "2026-10-21T20:47:29+05:30",
+      "end_time": "2026-10-21T20:47:29+05:30",
+      "related_artifacts": [
+        "A-0001"
+      ],
+      "user": "Gary",
+      "device": null,
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "User-session artifact observed"
+      ],
+      "experiment": "EXP-A"
+    },
+    {
+      "event_id": "CORR-002",
+      "type": "USB_SESSION",
+      "start_time": "2026-10-21T21:02:07+05:30",
+      "end_time": "2026-10-21T21:02:07+05:30",
+      "related_artifacts": [
+        "A-0002"
+      ],
+      "user": "Gary",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Removable-device connection artifact observed",
+        "No disconnect artifact; session end is unknown"
+      ],
+      "experiment": "EXP-A"
+    },
+    {
+      "event_id": "CORR-003",
+      "type": "USER_SESSION",
+      "start_time": "2026-10-21T20:47:29+05:30",
+      "end_time": "2026-10-21T20:47:29+05:30",
+      "related_artifacts": [
+        "B-0001"
+      ],
+      "user": "Gary",
+      "device": null,
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "User-session artifact observed"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-004",
+      "type": "USB_SESSION",
+      "start_time": "2026-10-21T21:32:36+05:30",
+      "end_time": "2026-10-21T21:32:36+05:30",
+      "related_artifacts": [
+        "B-0002"
+      ],
+      "user": "Gary",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Removable-device connection artifact observed",
+        "No disconnect artifact; session end is unknown"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-005",
+      "type": "POSSIBLE_TRANSFER_SESSION",
+      "start_time": "2026-10-21T20:47:29+05:30",
+      "end_time": "2026-10-21T21:32:59+05:30",
+      "related_artifacts": [
+        "B-0002",
+        "B-0003",
+        "B-0004",
+        "B-0006",
+        "B-0007",
+        "B-0008",
+        "B-0009",
+        "B-0005",
+        "B-0001"
+      ],
+      "user": "Gary",
+      "device": "Seagate Expansion SCSI Disk Device",
+      "files": [
+        "Customer_Database.csv",
+        "Employee_Salaries.xlsx",
+        "Project_Apollo.pdf"
+      ],
+      "confidence": "HIGH",
+      "reasoning": [
+        "USB device activity observed",
+        "Sensitive-file activity occurred within the configured time window",
+        "Employee user-session artifact corroborates temporal association",
+        "Destination-side file artifact was observed on removable media",
+        "Archive activity occurred in the same experiment"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-006",
+      "type": "SENSITIVE_FILE_ACTIVITY",
+      "start_time": "2026-10-21T21:32:57+05:30",
+      "end_time": "2026-10-21T21:32:59+05:30",
+      "related_artifacts": [
+        "B-0003",
+        "B-0004",
+        "B-0006",
+        "B-0007",
+        "B-0008",
+        "B-0009"
+      ],
+      "user": "Gary",
+      "device": "Gary",
+      "files": [
+        "Customer_Database.csv",
+        "Employee_Salaries.xlsx",
+        "Project_Apollo.pdf"
+      ],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Project-classified sensitive files have activity artifacts"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-007",
+      "type": "ARCHIVE_ACTIVITY",
+      "start_time": "2026-10-21T21:32:58+05:30",
+      "end_time": "2026-10-21T21:32:58+05:30",
+      "related_artifacts": [
+        "B-0005"
+      ],
+      "user": "Gary",
+      "device": "Gary",
+      "files": [],
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Archive creation artifact observed; intent is not established"
+      ],
+      "experiment": "EXP-B"
+    },
+    {
+      "event_id": "CORR-008",
+      "type": "POSSIBLE_CONCEALMENT",
+      "start_time": "2026-10-21T21:32:59+05:30",
+      "end_time": "2026-10-21T21:32:59+05:30",
+      "related_artifacts": [
+        "B-0009"
+      ],
+      "user": "Gary",
+      "device": null,
+      "files": [
+        "Project_Apollo.pdf"
+      ],
+      "confidence": "LOW",
+      "reasoning": [
+        "Rename or deletion artifact observed",
+        "Artifact presence alone does not establish malicious intent"
+      ],
+      "experiment": "EXP-B"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "title": "Removable media was connected",
+      "description": "Whether removable storage was present.",
+      "supporting_artifacts": [
+        "A-0002",
+        "B-0002"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "SUPPORTED",
+      "confidence": "HIGH",
+      "reasoning": [
+        "USB connection artifacts support device presence"
+      ]
+    },
+    {
+      "id": "H2",
+      "title": "Gary accessed confidential company files",
+      "description": "Whether the configured user interacted with classified files.",
+      "supporting_artifacts": [
+        "B-0003",
+        "B-0004",
+        "B-0006",
+        "B-0007",
+        "B-0008",
+        "B-0009"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "SUPPORTED",
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "User-associated sensitive-file artifacts were observed"
+      ]
+    },
+    {
+      "id": "H3",
+      "title": "Confidential files were transferred to removable media",
+      "description": "Requires corroborated temporal and destination evidence.",
+      "supporting_artifacts": [
+        "B-0001",
+        "B-0002",
+        "B-0003",
+        "B-0004",
+        "B-0005",
+        "B-0006",
+        "B-0007",
+        "B-0008",
+        "B-0009"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "SUPPORTED",
+      "confidence": "HIGH",
+      "reasoning": [
+        "USB device activity observed",
+        "Sensitive-file activity occurred within the configured time window",
+        "Employee user-session artifact corroborates temporal association",
+        "Destination-side file artifact was observed on removable media",
+        "Archive activity occurred in the same experiment"
+      ]
+    },
+    {
+      "id": "H4",
+      "title": "The user attempted concealment",
+      "description": "Rename/deletion/archive indicators are interpreted cautiously.",
+      "supporting_artifacts": [
+        "B-0009"
+      ],
+      "contradicting_artifacts": [],
+      "assessment": "PARTIALLY_SUPPORTED",
+      "confidence": "MEDIUM",
+      "reasoning": [
+        "Rename or deletion activity is consistent with possible concealment",
+        "Artifact presence alone does not establish malicious intent"
+      ]
+    }
+  ],
+  "experimental_score": {
+    "score": 13,
+    "observed": {
+      "usb_connection": true,
+      "sensitive_file_access": true,
+      "archive_creation": true,
+      "deleted_sensitive_file": true,
+      "matching_destination_file": true,
+      "user_session_correlation": true
+    },
+    "applied_rules": {
+      "usb_connection": 2,
+      "sensitive_file_access": 2,
+      "archive_creation": 2,
+      "deleted_sensitive_file": 2,
+      "matching_destination_file": 3,
+      "user_session_correlation": 2
+    }
+  },
+  "conclusion": "The combination of device, filesystem, user-session, and application artifacts strongly supports the simulated data-transfer hypothesis. No single artifact independently establishes the complete transfer sequence.",
+  "limitations": [
+    "Simulated laboratory environment",
+    "Artifact availability depends on Windows configuration",
+    "Timestamp sources have different semantics and reliability",
+    "USB presence alone does not establish transfer",
+    "Correlation does not establish intent",
+    "The experimental score is not a forensic standard"
+  ],
+  "disclaimer": "This system is an educational digital-forensics research platform operating on a controlled laboratory dataset. Findings represent an analytical interpretation of the supplied artifacts and should not be treated as a substitute for a validated forensic methodology in a real investigation."
+}

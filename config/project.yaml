@@ -1,5 +1,5 @@
 project:
-  name: "Forensic Investigation of Simulated Insider Data Exfiltration via Removable USB Storage on Windows"
+  name: "USB Insider Forensics: Detecting Data Exfiltration via Removable Media on Windows"
   case_id: "INSIDER-USB-001"
   investigator: "Student Investigator"
   timezone: "Asia/Kolkata"

@@ -1,6 +1,6 @@
 {
   "case": {
-    "name": "Forensic Investigation of Simulated Insider Data Exfiltration via Removable USB Storage on Windows",
+    "name": "USB Insider Forensics: Detecting Data Exfiltration via Removable Media on Windows",
     "case_id": "INSIDER-USB-001",
     "investigator": "Student Investigator",
     "timezone": "Asia/Kolkata"
@@ -368,7 +368,7 @@
       "host": "CORP-PC01",
       "user": "employee01",
       "path": "HKLM\\SYSTEM\\...\\USBSTOR",
-      "filename": "USBSTOR",
+      "filename": null,
       "action": "connected",
       "device": "BACKUP_DRIVE",
       "confidence": "MEDIUM",
@@ -853,7 +853,7 @@
       "type": "usb",
       "user": "employee01",
       "device": "BACKUP_DRIVE",
-      "file": "USBSTOR",
+      "file": null,
       "action": "connected",
       "timestamp_type": "connected",
       "interpretation": "Registry device identity observation",
@@ -1020,7 +1020,7 @@
       "confidence": "HIGH",
       "reasoning": [
         "Removable-device connection artifact observed",
-        "Disconnect artifact included when available"
+        "Disconnect artifact observed; session has a start and an end"
       ],
       "experiment": "EXP-A"
     },
@@ -1056,7 +1056,7 @@
       "confidence": "HIGH",
       "reasoning": [
         "Removable-device connection artifact observed",
-        "Disconnect artifact included when available"
+        "Disconnect artifact observed; session has a start and an end"
       ],
       "experiment": "EXP-B"
     },

@@ -1,14 +1,13 @@
 # Architecture
 
-The host contains an isolated Windows evidence VM and a forensic workstation. Experiment scripts operate only in the VM against fictional data and a designated USB. A powered-off disk/USB image is acquired and hashed; external forensic tools may export records without being required by the correlation engine.
+Evidence reaches the platform as exported records from one of three sources: the controlled scenario dataset, the read-only live triage collector run on a real Windows PC, or exports produced by forensic tools from a hashed disk image. No virtual machine is required. The correlation engine never depends on how the records were produced; it only needs the documented fields.
 
 ```text
-Windows VM → forensic image + hash → read-only exports → ingestion
-                                                    ↓
-raw preserved → normalized artifacts → timeline + correlation
-                                      → hypotheses + score
-                                      → SQLite → CLI/report/dashboard
+scenario dataset | live triage collector | tool exports from a hashed image
+  → evidence bundle hash + custody record → ingestion → normalization
+  → correlation → H1–H4 evaluation → SQLite → dashboard / API / reports / CSV
 ```
 
-Simulation, acquisition, analysis, and reporting are separate trust domains. Derived correlations list every source artifact ID. The dashboard binds only to loopback and deliberately rejects arbitrary web uploads and command execution.
+Trust boundaries are deliberate. Scenario scripts and collection metadata describe how evidence was produced and are never treated as proof. Preservation (hashing and custody) is kept separate from analysis, and the presentation layer shows only stored, reproducible results with artifact IDs and raw payloads.
 
+The `--demo` mode uses the scenario dataset. The full pipeline operates on any user-supplied export directory through `--input`; integrity manifests (`*manifest.json`) in that directory are recorded but not ingested as evidence.

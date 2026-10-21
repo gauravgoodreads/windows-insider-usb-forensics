@@ -4,7 +4,7 @@ connected,A-002,MEDIUM,BACKUP_DRIVE,EXP-A,,Removable storage device observed,USB
 copied,A-003,MEDIUM,BACKUP_DRIVE,EXP-A,Readme.txt,Normal test file created on lab USB,NTFS listing,2026-09-15T09:06:00+05:30,created,filesystem,employee01
 disconnected,A-004,MEDIUM,BACKUP_DRIVE,EXP-A,,Device-removal observation,Event-log export,2026-09-15T09:10:00+05:30,disconnected,usb,employee01
 logged_on,B-001,MEDIUM,,EXP-B,,Interactive laboratory user session,Security export,2026-09-15T10:00:00+05:30,logged_on,user_session,employee01
-connected,B-002,MEDIUM,BACKUP_DRIVE,EXP-B,USBSTOR,Registry device identity observation,USBSTOR,2026-09-15T10:04:00+05:30,connected,usb,employee01
+connected,B-002,MEDIUM,BACKUP_DRIVE,EXP-B,,Registry device identity observation,USBSTOR,2026-09-15T10:04:00+05:30,connected,usb,employee01
 accessed,B-003,MEDIUM,,EXP-B,Employee_Salaries.xlsx,Shortcut artifact associated with classified file,Recent Items export,2026-09-15T10:07:00+05:30,accessed,lnk,employee01
 accessed,B-004,MEDIUM,,EXP-B,Customer_Database.csv,Recent-document observation,Office recent export,2026-09-15T10:08:00+05:30,accessed,office,employee01
 copied,B-005,MEDIUM,BACKUP_DRIVE,EXP-B,Employee_Salaries.xlsx,Destination-side file entry on laboratory USB,USB NTFS listing,2026-09-15T10:10:00+05:30,created,filesystem,employee01

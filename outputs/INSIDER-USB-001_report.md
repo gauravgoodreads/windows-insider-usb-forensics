@@ -1,4 +1,4 @@
-# Forensic Investigation of Simulated Insider Data Exfiltration via Removable USB Storage on Windows
+# USB Insider Forensics: Detecting Data Exfiltration via Removable Media on Windows
 
 **Case:** INSIDER-USB-001  
 **Investigator:** Student Investigator
@@ -11,9 +11,9 @@ This controlled investigation evaluated device, filesystem, Registry/event, and 
 
 Did employee01 copy confidential company data to an external USB device, when, which files, and what independent evidence supports the conclusion? Can Windows artifacts distinguish legitimate USB use from simulated insider leakage?
 
-## Scope and Lab Environment
+## Scope and Evidence Sources
 
-Offline Windows 10/11 virtual-machine experiments using fictional Example Corporation data.
+Offline analysis of Windows 10/11 artifact exports: a controlled two-scenario dataset using fictional Example Corporation data, optionally complemented by read-only live triage of a real PC.
 
 ## Evidence Inventory
 
@@ -24,7 +24,7 @@ Raw exports are preserved separately; normalized records retain their original p
 
 ## Acquisition Methodology and Hash Verification
 
-The included demo hashes the synthetic export bundle for provenance. A real experiment must separately acquire the stopped VM and USB images, hash them, record custody, and examine only verified copies.
+The included demo hashes the synthetic export bundle for provenance. Real evidence is either collected read-only with the triage collector, which records a SHA-256 manifest, or acquired as a powered-off disk and USB image that is hashed, logged in custody and examined only as a verified copy.
 
 ## Artifact, USB, User, and Filesystem Analysis
 
@@ -42,7 +42,7 @@ The included demo hashes the synthetic export bundle for provenance. A real expe
 
 - B-001: user_session / logged_on / n/a (MEDIUM)
 
-- B-002: usb / connected / USBSTOR (MEDIUM)
+- B-002: usb / connected / BACKUP_DRIVE (MEDIUM)
 
 - B-003: lnk / accessed / Employee_Salaries.xlsx (MEDIUM)
 
@@ -94,11 +94,11 @@ The included demo hashes the synthetic export bundle for provenance. A real expe
 
 - CORR-001 USER_SESSION (MEDIUM): User-session artifact observed
 
-- CORR-002 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact included when available
+- CORR-002 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact observed; session has a start and an end
 
 - CORR-003 USER_SESSION (MEDIUM): User-session artifact observed
 
-- CORR-004 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact included when available
+- CORR-004 USB_SESSION (HIGH): Removable-device connection artifact observed; Disconnect artifact observed; session has a start and an end
 
 - CORR-005 POSSIBLE_TRANSFER_SESSION (HIGH): USB device activity observed; Sensitive-file activity occurred within the configured time window; Employee user-session artifact corroborates temporal association; Destination-side file artifact was observed on removable media; Archive activity occurred in the same experiment
 
